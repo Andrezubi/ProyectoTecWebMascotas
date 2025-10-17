@@ -172,3 +172,4 @@ D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos\obj\Debug\net9.
 D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos\obj\Debug\net9.0\ref\ProyectoMascotas.Api.dll
 D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos\bin\Debug\net9.0\ProyectoMascotas.Infrastructure.dll
 D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos\bin\Debug\net9.0\ProyectoMascotas.Infrastructure.pdb
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos\obj\Debug\net9.0\ProyectoMascotas.Api.sourcelink.json

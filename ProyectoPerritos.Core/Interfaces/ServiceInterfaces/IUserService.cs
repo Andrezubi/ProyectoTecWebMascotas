@@ -14,5 +14,6 @@ namespace ProyectoMascotas.Core.Interfaces.ServiceInterfaces
         Task InsertUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(User user);
+        Task<bool> loginAsync(string email, string password);
     }
 }

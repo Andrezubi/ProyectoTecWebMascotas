@@ -1,12 +1,60 @@
 [
   {
     "ContainingType": "ProyectoMascotas.Api.Controllers.UserController",
-    "Method": "GetPosts",
+    "Method": "GetUsers",
     "RelativePath": "api/User",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProyectoMascotas.Api.Controllers.UserController",
+    "Method": "InsertUser",
+    "RelativePath": "api/User",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDTO",
+        "Type": "ProyectoMascotas.Api.Data.UserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProyectoMascotas.Api.Controllers.UserController",
+    "Method": "GetUserById",
+    "RelativePath": "api/User/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProyectoMascotas.Api.Controllers.UserController",
+    "Method": "UserLogin",
+    "RelativePath": "api/User/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginRequest",
+        "Type": "ProyectoMascotas.Core.Custom_Entities.LoginRequest",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]

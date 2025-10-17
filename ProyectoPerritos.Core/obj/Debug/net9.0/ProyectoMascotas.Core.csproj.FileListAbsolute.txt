@@ -9,3 +9,4 @@ D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\
 D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\refint\ProyectoMascotas.Core.dll
 D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.pdb
 D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ref\ProyectoMascotas.Core.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.sourcelink.json

@@ -11,6 +11,8 @@ namespace ProyectoMascotas.Core.Interfaces
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByCiAsync(int? ci);
+        Task<User> GetUserByEmailAsync(string ?email);
         Task InsertUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(User user);

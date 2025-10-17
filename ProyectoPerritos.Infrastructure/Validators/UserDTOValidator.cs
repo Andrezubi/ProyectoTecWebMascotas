@@ -12,6 +12,11 @@ namespace ProyectoMascotas.Infrastructure.Validators
     {
         public UserDTOValidator()
         {
+            RuleFor(u => u.Id)
+            .NotEmpty().WithMessage("El Id es obligatorio")
+            .GreaterThan(0).WithMessage("El Id no puede ser negativo");
+
+
             RuleFor(u => u.Ci)
             .NotEmpty().WithMessage("El CI es obligatorio.")
             .GreaterThan(0).WithMessage("El CI debe ser mayor que 0.");
@@ -23,7 +28,7 @@ namespace ProyectoMascotas.Infrastructure.Validators
             RuleFor(u => u.Email)
                 .NotEmpty().WithMessage("El correo es obligatorio.")
                 .EmailAddress().WithMessage("Debe ingresar un correo válido.")
-                .MaximumLength(50);
+                .MaximumLength(50).WithMessage("El correo no puede superar los 50 caracteres");
 
             RuleFor(u => u.Phone)
                 .NotEmpty().WithMessage("El teléfono es obligatorio.")
@@ -31,7 +36,7 @@ namespace ProyectoMascotas.Infrastructure.Validators
 
             RuleFor(u => u.Password)
                 .NotEmpty().WithMessage("La contraseña es obligatoria.")
-                .MinimumLength(6).WithMessage("La contraseña debe tener al menos 6 caracteres.");
+                .MinimumLength(8).WithMessage("La contraseña debe tener al menos 8 caracteres.");
 
             RuleFor(u => u.PhotoUrl)
                 .MaximumLength(255)

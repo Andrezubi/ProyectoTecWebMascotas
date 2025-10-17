@@ -28,6 +28,17 @@ namespace ProyectoMascotas.Infrastructure.Repositories
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             return user;
         }
+        public async Task<User>GetUserByEmailAsync(string? email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return user;
+
+        }
+        public async Task<User>GetUserByCiAsync(int ?ci)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Ci == ci);
+            return user;
+        }
         public async Task InsertUserAsync(User user)
         {
             _context.Users.Add(user);
