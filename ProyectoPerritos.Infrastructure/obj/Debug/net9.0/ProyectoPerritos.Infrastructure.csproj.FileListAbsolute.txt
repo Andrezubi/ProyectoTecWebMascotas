@@ -1,0 +1,17 @@
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\bin\Debug\net9.0\ProyectoPerritos.Infrastructure.deps.json
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\bin\Debug\net9.0\ProyectoPerritos.Infrastructure.runtimeconfig.json
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\bin\Debug\net9.0\ProyectoPerritos.Infrastructure.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\bin\Debug\net9.0\ProyectoPerritos.Infrastructure.pdb
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\bin\Debug\net9.0\ProyectoMascotas.Core.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\bin\Debug\net9.0\ProyectoMascotas.Core.pdb
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.csproj.AssemblyReference.cache
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.AssemblyInfoInputs.cache
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.AssemblyInfo.cs
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.csproj.CoreCompileInputs.cache
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\Proyecto.C56693BD.Up2Date
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\refint\ProyectoPerritos.Infrastructure.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.pdb
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ProyectoPerritos.Infrastructure.genruntimeconfig.cache
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Infrastructure\obj\Debug\net9.0\ref\ProyectoPerritos.Infrastructure.dll

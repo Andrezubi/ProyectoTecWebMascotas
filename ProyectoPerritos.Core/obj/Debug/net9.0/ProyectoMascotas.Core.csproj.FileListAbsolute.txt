@@ -1,0 +1,11 @@
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\bin\Debug\net9.0\ProyectoMascotas.Core.deps.json
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\bin\Debug\net9.0\ProyectoMascotas.Core.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\bin\Debug\net9.0\ProyectoMascotas.Core.pdb
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.AssemblyInfoInputs.cache
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.AssemblyInfo.cs
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.csproj.CoreCompileInputs.cache
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\refint\ProyectoMascotas.Core.dll
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ProyectoMascotas.Core.pdb
+D:\coasas andres\Cosas TecWeb1\SolucionPerritos\ProyectoPerritos.Core\obj\Debug\net9.0\ref\ProyectoMascotas.Core.dll

@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "ProyectoMascotas.Api.Controllers.UserController",
+    "Method": "GetPosts",
+    "RelativePath": "api/User",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
