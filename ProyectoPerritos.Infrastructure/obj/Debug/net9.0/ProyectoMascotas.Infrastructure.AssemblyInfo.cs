@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProyectoMascotas.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a9e86ab6fcd62941167c516f14a9d3ca6b0a8f7f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5bf12c4c38148c9d8e31f67fc08d734f490213da")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProyectoMascotas.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProyectoMascotas.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoMascotas.Core.QueryFilters
 {
-    internal class LostPetQueryFilter
+    internal class LostPetQueryFilter:PaginationQueryFilter
     {
         public int? UserId { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Custom_Entities;
 using ProyectoMascotas.Core.QueryFilters;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace ProyectoMascotas.Core.Interfaces.ServiceInterfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllUsersAsync(UserQueryFilter filters);
+        Task<ResponseData> GetAllUsersAsync(UserQueryFilter filters);
         Task<User> GetUserByIdAsync(int id);
         Task InsertUserAsync(User user);
         Task UpdateUserAsync(User user);

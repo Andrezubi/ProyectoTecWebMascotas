@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Custom_Entities;
 using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
@@ -7,6 +8,7 @@ using ProyectoMascotas.Core.QueryFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +22,7 @@ namespace ProyectoMascotas.Core.Services
 
             _unitOfWork = unitOfWork;
         }
-        public async Task<IEnumerable<User>> GetAllUsersAsync(UserQueryFilter filters)
+        public async Task<ResponseData> GetAllUsersAsync(UserQueryFilter filters)
         {
 
             var users = await _unitOfWork.UserRepositoryExtra.GetAllUsersAsync();
@@ -30,14 +32,36 @@ namespace ProyectoMascotas.Core.Services
                 users = users.Where(x => x.Name== filters.Name);
             }
 
+            
+
 
             foreach (var user in users) {
                 user.Password = "No tienes permiso de ver contrasenias";
             }
 
+            var pagedUsers = PagedList<object>.Create(users, filters.PageNumber, filters.PageSize);
+            if (pagedUsers.Any())
+            {
+                return new ResponseData()
+                {
+                    Messages = new Message[] { new() { Type = "Information", Description = "Registros de posts recuperados correctamente" } },
+                    Pagination = pagedUsers,
+                    StatusCode = HttpStatusCode.OK
+                };
+            }
+            else
+            {
+                return new ResponseData()
+                {
+                    Messages = new Message[] { new() { Type = "Warning", Description = "No fue posible recuperar la cantidad de registros" } },
+                    Pagination = pagedUsers,
+                    StatusCode = HttpStatusCode.OK
+                };
 
 
-            return users;
+
+               
+            }
         }
         public async Task<User> GetUserByIdAsync(int id)
         {

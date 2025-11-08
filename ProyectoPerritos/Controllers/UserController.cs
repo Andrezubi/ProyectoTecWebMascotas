@@ -31,9 +31,22 @@ namespace ProyectoMascotas.Api.Controllers
         public async Task<IActionResult> GetUsers([FromQuery]UserQueryFilter filters)
         {
             var users = await _userService.GetAllUsersAsync(filters);
-            var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users);
+            var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users.Pagination);
 
-            var response = new ApiResponse<IEnumerable<UserDTO>>(usersDTO);
+
+            var pagination = new Pagination
+            {
+                TotalCount =users.Pagination.TotalCount,
+                PageSize = users.Pagination.PageSize,
+                CurrentPage = users.Pagination.CurrentPage,
+                TotalPages = users.Pagination.TotalPages,
+                HasNextPage = users.Pagination.HasNextPage,
+                HasPreviousPage = users.Pagination.HasPreviousPage
+            };
+            var response = new ApiResponse<IEnumerable<UserDTO>>(usersDTO)
+            {
+                Pagination = pagination
+            };
 
             return Ok(response);
         }

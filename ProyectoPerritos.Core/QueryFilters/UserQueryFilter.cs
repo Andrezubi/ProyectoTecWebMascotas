@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoMascotas.Core.QueryFilters
 {
-    public class UserQueryFilter
+    public class UserQueryFilter:PaginationQueryFilter
     {
         public string? Name { get; set; }
 
