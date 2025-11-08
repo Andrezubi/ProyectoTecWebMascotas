@@ -21,6 +21,13 @@ builder.Services.AddDbContext<MascotasContext>(options => options.UseSqlServer(c
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
+
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IFoundPetRepository, FoundPetRepository>();
 builder.Services.AddTransient<ILostPetRepository, LostPetRepository>();
@@ -34,6 +41,28 @@ builder.Services.AddTransient<IPetPhotoService, PetPhotoService>();
 builder.Services.AddTransient<IMatchService, MatchService>();
 
 
+//configuracion de swagger 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new()
+    {
+        Title = "Backend Mascotas Perdidas API",
+        Version = "v1",
+        Description = "Documentacion de la API de Mascotas Perdidas - NET 9",
+        Contact = new()
+        {
+            Name = "Andres Zubieta Sempertegui",
+            Email = "andres.zubieta@ucb.edu.bo"
+        }
+    });
+
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+
+    options.EnableAnnotations();
+});
 
 
 
@@ -65,6 +94,18 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 });
 
 var app = builder.Build();
+
+//usar Swagger
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend Mascotas Perdidas API v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
 
 // Configure the HTTP request pipeline.
 

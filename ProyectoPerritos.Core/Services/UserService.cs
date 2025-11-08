@@ -12,13 +12,15 @@ namespace ProyectoMascotas.Core.Services
 {
     public class UserService: IUserService
     {
-        private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository) { 
-            _userRepository = userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        public UserService( IUnitOfWork unitOfWork) { 
+
+            _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            var users= await _userRepository.GetAllUsersAsync();
+
+            var users = await _unitOfWork.UserRepository.GetAll();
             foreach (var user in users) {
                 user.Password = "No tienes permiso de ver contrasenias";
             }
@@ -26,7 +28,7 @@ namespace ProyectoMascotas.Core.Services
         }
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var user = await _userRepository.GetUserByIdAsync(id);
+            var user = await _unitOfWork.UserRepository.GetById(id);
             if (user == null)
             {
                 throw new Exception("No existe usuario con ese id");
@@ -37,18 +39,18 @@ namespace ProyectoMascotas.Core.Services
         public async Task InsertUserAsync(User user)
         {
 
-            var userId = await _userRepository.GetUserByIdAsync(user.Id);
+            var userId = await _unitOfWork.UserRepository.GetById(user.Id);
             if (userId != null)
             {
                 throw new Exception("No se pueden repetir los Ids");
             }
 
-            var userCi = await _userRepository.GetUserByCiAsync(user.Ci);
+            var userCi = await _unitOfWork.UserRepositoryExtra.GetUserByCiAsync(user.Ci);
             if (userCi != null)
             {
                 throw new Exception("Este Ci ya no esta disponible");
             }
-            var userEmail = await _userRepository.GetUserByEmailAsync(user.Email);
+            var userEmail = await _unitOfWork.UserRepositoryExtra.GetUserByEmailAsync(user.Email);
             if (userEmail != null)
             {
                 throw new Exception("Este email ya fue usado");
@@ -65,12 +67,12 @@ namespace ProyectoMascotas.Core.Services
             {
                 throw new Exception("La contrasenia debe contener un numero");
             }
-            await _userRepository.InsertUserAsync(user);
+            await _unitOfWork.UserRepository.Add(user);
         }
 
         public async Task<bool> loginAsync(string email, string password)
         {
-            var user = await _userRepository.GetUserByEmailAsync(email);
+            var user = await _unitOfWork.UserRepositoryExtra.GetUserByEmailAsync(email);
             if (user == null)
             {
                 throw new Exception("No se encontro el email en la base de datos");
@@ -84,11 +86,11 @@ namespace ProyectoMascotas.Core.Services
         }
         public async Task UpdateUserAsync(User user)
         {
-            await _userRepository.UpdateUserAsync(user);
+            await _unitOfWork.UserRepository.Update(user);
         }
         public async Task DeleteUserAsync(User user)
         {
-            await _userRepository.DeleteUserAsync(user);
+            await _unitOfWork.UserRepository.Delete(user.Id);
 
         }
     }

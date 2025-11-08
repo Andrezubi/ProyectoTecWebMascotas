@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj": {}
+    "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj": {
+    "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj",
+        "projectUniqueName": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj",
         "projectName": "ProyectoMascotas.Core",
-        "projectPath": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj",
+        "projectPath": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj",
         "packagesPath": "C:\\Users\\59169\\.nuget\\packages\\",
-        "outputPath": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Core\\obj\\",
+        "outputPath": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,6 +50,12 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -70,14 +76,14 @@
         }
       }
     },
-    "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj": {
+    "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj",
+        "projectUniqueName": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj",
         "projectName": "ProyectoMascotas.Infrastructure",
-        "projectPath": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj",
+        "projectPath": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\59169\\.nuget\\packages\\",
-        "outputPath": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Infrastructure\\obj\\",
+        "outputPath": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -99,8 +105,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj": {
-                "projectPath": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj"
+              "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj": {
+                "projectPath": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj"
               }
             }
           }

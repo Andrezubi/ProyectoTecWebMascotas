@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ProyectoMascotas.Core.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace ProyectoMascotas.Api.Data;
 
-public partial class User
+public partial class User : BaseEntity
 {
-    public int Id { get; set; }
+    //public int Id { get; set; }
 
     public int? Ci { get; set; }
 

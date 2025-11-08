@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "JnWVuEsHr7E=",
+  "dgSpecHash": "3TV1sKuf8Mo=",
   "success": true,
-  "projectFilePath": "D:\\coasas andres\\Cosas TecWeb1\\SolucionPerritos\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Core\\ProyectoMascotas.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\59169\\.nuget\\packages\\microsoft.extensions.apidescription.server\\9.0.0\\microsoft.extensions.apidescription.server.9.0.0.nupkg.sha512",
+    "C:\\Users\\59169\\.nuget\\packages\\microsoft.openapi\\1.6.25\\microsoft.openapi.1.6.25.nupkg.sha512",
+    "C:\\Users\\59169\\.nuget\\packages\\swashbuckle.aspnetcore\\9.0.6\\swashbuckle.aspnetcore.9.0.6.nupkg.sha512",
+    "C:\\Users\\59169\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\9.0.6\\swashbuckle.aspnetcore.swagger.9.0.6.nupkg.sha512",
+    "C:\\Users\\59169\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\9.0.6\\swashbuckle.aspnetcore.swaggergen.9.0.6.nupkg.sha512",
+    "C:\\Users\\59169\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\9.0.6\\swashbuckle.aspnetcore.swaggerui.9.0.6.nupkg.sha512"
+  ],
   "logs": []
 }
