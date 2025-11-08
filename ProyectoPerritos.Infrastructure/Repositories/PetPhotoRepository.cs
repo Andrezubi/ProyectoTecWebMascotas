@@ -32,18 +32,15 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public async Task InsertPetPhotoAsync(PetPhoto petPhoto)
         {
             _context.PetPhotos.Add(petPhoto);
-            await _context.SaveChangesAsync();
         }
         public async Task UpdatePetPhotoAsync(PetPhoto petPhoto)
         {
             _context.PetPhotos.Update(petPhoto);
-            await _context.SaveChangesAsync();
 
         }
         public async Task DeletePetPhotoAsync(PetPhoto petPhoto)
         {
             _context.PetPhotos.Remove(petPhoto);
-            await _context.SaveChangesAsync();
 
         }
     }

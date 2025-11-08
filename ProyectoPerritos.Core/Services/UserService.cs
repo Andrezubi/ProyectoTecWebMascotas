@@ -68,6 +68,7 @@ namespace ProyectoMascotas.Core.Services
                 throw new Exception("La contrasenia debe contener un numero");
             }
             await _unitOfWork.UserRepository.Add(user);
+            await _unitOfWork.SaveChangesAsync();   
         }
 
         public async Task<bool> loginAsync(string email, string password)
@@ -87,11 +88,12 @@ namespace ProyectoMascotas.Core.Services
         public async Task UpdateUserAsync(User user)
         {
             await _unitOfWork.UserRepository.Update(user);
+            await _unitOfWork.SaveChangesAsync();
         }
         public async Task DeleteUserAsync(User user)
         {
             await _unitOfWork.UserRepository.Delete(user.Id);
-
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

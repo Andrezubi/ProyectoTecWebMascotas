@@ -31,18 +31,15 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public async Task InsertLostPetAsync(LostPet lostPet)
         {
             _context.LostPets.Add(lostPet);
-            await _context.SaveChangesAsync();
         }
         public async Task UpdateLostPetAsync(LostPet lostPet)
         {
             _context.LostPets.Update(lostPet);
-            await _context.SaveChangesAsync();
 
         }
         public async Task DeleteLostPetAsync(LostPet lostPet)
         {
             _context.LostPets.Remove(lostPet);
-            await _context.SaveChangesAsync();
 
         }
     }

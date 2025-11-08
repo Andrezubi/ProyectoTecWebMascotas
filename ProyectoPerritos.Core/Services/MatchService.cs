@@ -12,30 +12,36 @@ namespace ProyectoMascotas.Core.Services
 {
     public class MatchService:IMatchService
     {
-        private readonly IMatchRepository _matchRepository;
-        public MatchService(IMatchRepository matchRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public MatchService(IUnitOfWork unitOfWork)
         {
-            _matchRepository = matchRepository;
+
+            _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<Match>> GetAllMatchesAsync()
         {
-            return await _matchRepository.GetAllMatchesAsync();
+            return await _unitOfWork.MatchRepository.GetAll();
         }
         public async Task<Match> GetMatchByIdAsync(int id)
         {
-            return await _matchRepository.GetMatchByIdAsync(id);
+
+            return await _unitOfWork.MatchRepository.GetById(id);
         }
         public async Task InsertMatchAsync(Match match)
         {
-            await _matchRepository.InsertMatchAsync(match);
+            await _unitOfWork.MatchRepository.Add(match);
+            await _unitOfWork.SaveChangesAsync();
         }
         public async Task UpdateMatchAsync(Match match)
         {
-            await _matchRepository.UpdateMatchAsync(match);
+            
+            await _unitOfWork.MatchRepository.Update(match);
+            await _unitOfWork.SaveChangesAsync();
         }
         public async Task DeleteMatchAsync(Match match)
         {
-            await _matchRepository.DeleteMatchAsync(match);
+            await _unitOfWork.MatchRepository.Delete(match.Id);
+            await _unitOfWork.SaveChangesAsync();
 
         }
     }

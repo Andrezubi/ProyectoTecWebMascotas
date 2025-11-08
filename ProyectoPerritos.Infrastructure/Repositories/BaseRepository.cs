@@ -32,20 +32,17 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public async Task Add(T entity)
         {
             _entities.Add(entity);
-            await _context.SaveChangesAsync();
         }
 
         public async Task Update(T entity)
         {
             _entities.Update(entity);
-            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
             T entity = await GetById(id);
             _entities.Remove(entity);
-            await _context.SaveChangesAsync();
         }
     }
 

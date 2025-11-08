@@ -11,30 +11,33 @@ namespace ProyectoMascotas.Core.Services
 {
     public class FoundPetService:IFoundPetService
     {
-        private readonly IFoundPetRepository _foundPetRepository;
-        public FoundPetService(IFoundPetRepository foundPetRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public FoundPetService(IUnitOfWork unitOfWork)
         {
-            _foundPetRepository = foundPetRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<FoundPet>> GetAllFoundPetsAsync()
         {
-            return await _foundPetRepository.GetAllFoundPetsAsync();
+            return await _unitOfWork.FoundPetRepository.GetAll();
         }
         public async Task<FoundPet> GetFoundPetByIdAsync(int id)
         {
-            return await _foundPetRepository.GetFoundPetByIdAsync(id);
+            return await _unitOfWork.FoundPetRepository.GetById(id);
         }
         public async Task InsertFoundPetAsync(FoundPet foundPet)
         {
-            await _foundPetRepository.InsertFoundPetAsync(foundPet);
+            await _unitOfWork.FoundPetRepository.Add(foundPet);
+            await _unitOfWork.SaveChangesAsync();
         }
         public async Task UpdateFoundPetAsync(FoundPet foundPet)
         {
-            await _foundPetRepository.UpdateFoundPetAsync(foundPet);
+            await _unitOfWork.FoundPetRepository.Update(foundPet);
+            await _unitOfWork.SaveChangesAsync();
         }
         public async Task DeleteFoundPetAsync(FoundPet foundPet)
         {
-            await _foundPetRepository.DeleteFoundPetAsync(foundPet);
+            await _unitOfWork.FoundPetRepository.Delete(foundPet.Id);
+            await _unitOfWork.SaveChangesAsync();
 
         }
     }

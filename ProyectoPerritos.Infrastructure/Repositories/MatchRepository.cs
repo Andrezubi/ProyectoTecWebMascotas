@@ -34,18 +34,15 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public async Task InsertMatchAsync(Match match)
         {
             _context.Matches.Add(match);
-            await _context.SaveChangesAsync();
         }
         public async Task UpdateMatchAsync(Match match)
         {
             _context.Matches.Update(match);
-            await _context.SaveChangesAsync();
 
         }
         public async Task DeleteMatchAsync(Match match)
         {
             _context.Matches.Remove(match);
-            await _context.SaveChangesAsync();
 
         }
     }
