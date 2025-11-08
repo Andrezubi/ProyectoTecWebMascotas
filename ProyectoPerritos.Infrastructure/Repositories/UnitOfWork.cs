@@ -1,8 +1,11 @@
 ﻿using FluentValidation.Validators;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using ProyectoMascotas.Api.Data;
 using ProyectoMascotas.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +21,16 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public readonly IBaseRepository<Match>? _matchRepository;
         public readonly IBaseRepository<PetPhoto>? _petPhotoRepository;
         public readonly IUserRepository? _userExtraRepository;
-        public UnitOfWork(MascotasContext context)
+
+        public readonly IDapperContext _dapper;
+        private IDbContextTransaction? _efTransaction;
+
+        public UnitOfWork(MascotasContext context, IDapperContext dapper)
         {
             _context = context;
+            _dapper = dapper;
         }
+
         public IBaseRepository<User> UserRepository =>
             _userRepository ?? new BaseRepository<User>(_context);
 
@@ -36,13 +45,14 @@ namespace ProyectoMascotas.Infrastructure.Repositories
 
 
         public IUserRepository UserRepositoryExtra =>
-            _userExtraRepository ?? new UserRepository(_context);
+            _userExtraRepository ?? new UserRepository(_context, _dapper);
 
         public void Dispose()
         {
             if (_context != null)
             {
                 _context.Dispose();
+                _efTransaction?.Dispose();
             }
         }
 
@@ -56,6 +66,60 @@ namespace ProyectoMascotas.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        #region Transacciones
+        public async Task BeginTransactionAsync()
+        {
+            if (_efTransaction == null)
+            {
+                _efTransaction = await _context.Database.BeginTransactionAsync();
+
+                // registrar la conexión/tx en DapperContext
+                var conn = _context.Database.GetDbConnection();
+                var tx = _efTransaction.GetDbTransaction();
+                _dapper.SetAmbientConnection(conn, tx);
+            }
+        }
+
+        public async Task CommitAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                if (_efTransaction != null)
+                {
+                    await _efTransaction.CommitAsync();
+                    _efTransaction.Dispose();
+                    _efTransaction = null;
+                }
+            }
+            finally
+            {
+                _dapper.ClearAmbientConnection();
+            }
+        }
+
+        public async Task RollbackAsync()
+        {
+            if (_efTransaction != null)
+            {
+                await _efTransaction.RollbackAsync();
+                _efTransaction.Dispose();
+                _efTransaction = null;
+            }
+            _dapper.ClearAmbientConnection();
+        }
+
+        public IDbConnection? GetDbConnection()
+        {
+            // Retornamos la conexión subyacente del DbContext
+            return _context.Database.GetDbConnection();
+        }
+
+        public IDbTransaction? GetDbTransaction()
+        {
+            return _efTransaction?.GetDbTransaction();
+        }
+        #endregion
 
 
 

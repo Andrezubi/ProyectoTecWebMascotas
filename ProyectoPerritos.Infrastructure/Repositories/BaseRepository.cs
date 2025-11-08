@@ -13,7 +13,7 @@ namespace ProyectoMascotas.Infrastructure.Repositories
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         private readonly MascotasContext _context;
-        private readonly DbSet<T> _entities;
+        protected readonly DbSet<T> _entities;
         public BaseRepository(MascotasContext context)
         {
             _context = context;

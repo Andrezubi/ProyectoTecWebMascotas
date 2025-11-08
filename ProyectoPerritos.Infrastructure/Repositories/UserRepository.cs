@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Enum;
 using ProyectoMascotas.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,32 +14,103 @@ namespace ProyectoMascotas.Infrastructure.Repositories
     public class UserRepository:IUserRepository
     {
         private readonly MascotasContext _context;
-        public UserRepository(MascotasContext context)
+        private readonly IDapperContext _dapper;
+        public UserRepository(MascotasContext context, IDapperContext dapper)
         {
             _context = context;
+            _dapper = dapper;
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            var users = await _context.Users.ToListAsync();
-            return users;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM DBMascotas.dbo.Users
+                ORDER BY Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryAsync<User>(sql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
 
         }
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-            return user;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM DBMascotas.dbo.Users
+                WHERE Id=@Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryFirstOrDefaultAsync<User>(sql,new {Id=id});
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         public async Task<User>GetUserByEmailAsync(string? email)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
-            return user;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM DBMascotas.dbo.Users
+                WHERE Email=@Email",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
         }
         public async Task<User>GetUserByCiAsync(int ?ci)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Ci == ci);
-            return user;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM DBMascotas.dbo.Users
+                WHERE Ci=@Ci",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryFirstOrDefaultAsync<User>(sql, new { Ci = ci });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         public async Task InsertUserAsync(User user)
         {

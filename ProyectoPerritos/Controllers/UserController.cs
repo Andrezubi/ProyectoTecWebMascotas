@@ -6,6 +6,7 @@ using ProyectoMascotas.Api.Data;
 using ProyectoMascotas.Api.Responses;
 using ProyectoMascotas.Core.Custom_Entities;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
+using ProyectoMascotas.Core.QueryFilters;
 using ProyectoMascotas.Infrastructure.Validators;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -27,9 +28,9 @@ namespace ProyectoMascotas.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery]UserQueryFilter filters)
         {
-            var users = await _userService.GetAllUsersAsync();
+            var users = await _userService.GetAllUsersAsync(filters);
             var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users);
 
             var response = new ApiResponse<IEnumerable<UserDTO>>(usersDTO);

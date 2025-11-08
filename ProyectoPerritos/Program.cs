@@ -4,6 +4,7 @@ using ProyectoMascotas.Api.Data;
 using ProyectoMascotas.Core.Interfaces;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
 using ProyectoMascotas.Core.Services;
+using ProyectoMascotas.Infrastructure.Data;
 using ProyectoMascotas.Infrastructure.Filters;
 using ProyectoMascotas.Infrastructure.Mappings;
 using ProyectoMascotas.Infrastructure.Repositories;
@@ -68,6 +69,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddControllers(options =>
 {
+
     options.Filters.Add<ValidationFilter>();
 });
 
@@ -82,10 +84,19 @@ builder.Services.AddValidatorsFromAssemblyContaining<GetByIdRequestValidator>();
 // Services
 builder.Services.AddScoped<IValidationService, ValidationService>();
 
+// Registrar IDbConnectionFactory, UnitOfWork, DapperContext y repos
+builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+
+
+builder.Services.AddScoped<IDapperContext, DapperContext>();
 
 
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+}).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }).ConfigureApiBehaviorOptions(options =>

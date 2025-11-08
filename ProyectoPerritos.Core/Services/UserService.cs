@@ -1,6 +1,9 @@
-﻿using ProyectoMascotas.Api.Data;
+﻿using Microsoft.Extensions.Hosting;
+using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
+using ProyectoMascotas.Core.QueryFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,21 +20,31 @@ namespace ProyectoMascotas.Core.Services
 
             _unitOfWork = unitOfWork;
         }
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync(UserQueryFilter filters)
         {
 
-            var users = await _unitOfWork.UserRepository.GetAll();
+            var users = await _unitOfWork.UserRepositoryExtra.GetAllUsersAsync();
+
+            if(filters.Name != null)
+            {
+                users = users.Where(x => x.Name== filters.Name);
+            }
+
+
             foreach (var user in users) {
                 user.Password = "No tienes permiso de ver contrasenias";
             }
+
+
+
             return users;
         }
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var user = await _unitOfWork.UserRepository.GetById(id);
+            var user = await _unitOfWork.UserRepositoryExtra.GetUserByIdAsync(id);
             if (user == null)
             {
-                throw new Exception("No existe usuario con ese id");
+                throw new BusinessException("No existe usuario con ese id",404);
             }
             user.Password = "No tienes permiso de ver contrasenias";
             return user;
@@ -39,33 +52,33 @@ namespace ProyectoMascotas.Core.Services
         public async Task InsertUserAsync(User user)
         {
 
-            var userId = await _unitOfWork.UserRepository.GetById(user.Id);
+            var userId = await _unitOfWork.UserRepositoryExtra.GetUserByIdAsync(user.Id);
             if (userId != null)
             {
-                throw new Exception("No se pueden repetir los Ids");
+                throw new BusinessException("No se pueden repetir los Ids",400);
             }
 
             var userCi = await _unitOfWork.UserRepositoryExtra.GetUserByCiAsync(user.Ci);
             if (userCi != null)
             {
-                throw new Exception("Este Ci ya no esta disponible");
+                throw new BusinessException("Este Ci ya no esta disponible",400);
             }
             var userEmail = await _unitOfWork.UserRepositoryExtra.GetUserByEmailAsync(user.Email);
             if (userEmail != null)
             {
-                throw new Exception("Este email ya fue usado");
+                throw new BusinessException("Este email ya fue usado", 400);
             }
             if (!user.Password.Any(char.IsUpper))
             {
-                throw new Exception("La contrasenia debe tener una letra mayuscula");
+                throw new BusinessException("La contrasenia debe tener una letra mayuscula", 400);
             }
             if (!user.Password.Any(char.IsLower))
             {
-                throw new Exception("La contrasenia debe tener una letra minuscula");
+                throw new BusinessException("La contrasenia debe tener una letra minuscula", 400);
             }
             if (!user.Password.Any(char.IsDigit))
             {
-                throw new Exception("La contrasenia debe contener un numero");
+                throw new BusinessException("La contrasenia debe contener un numero", 400);
             }
             await _unitOfWork.UserRepository.Add(user);
             await _unitOfWork.SaveChangesAsync();   
@@ -76,11 +89,11 @@ namespace ProyectoMascotas.Core.Services
             var user = await _unitOfWork.UserRepositoryExtra.GetUserByEmailAsync(email);
             if (user == null)
             {
-                throw new Exception("No se encontro el email en la base de datos");
+                throw new BusinessException("No se encontro el email en la base de datos", 404);
             }
             if (user.Password != password)
             {
-                throw new Exception("Contrasenia incorrecta");
+                throw new BusinessException("Contrasenia incorrecta", 400);
             }
             return true;
 
