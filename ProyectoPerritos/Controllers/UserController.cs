@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using ProyectoMascotas.Api.Data;
 using ProyectoMascotas.Api.Responses;
 using ProyectoMascotas.Core.Custom_Entities;
+using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
 using ProyectoMascotas.Core.QueryFilters;
 using ProyectoMascotas.Infrastructure.Validators;
@@ -27,7 +28,21 @@ namespace ProyectoMascotas.Api.Controllers
             _validationService = validationService;
         }
 
+
+
+
+        /// <summary>
+        /// Obtiene todos los usuarios con paginación y filtros opcionales.
+        /// </summary>
+        /// <remarks>
+        /// Este endpoint devuelve una lista de usuarios paginada según los filtros especificados. 
+        /// Se incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios
+        /// </remarks>
+        /// <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
+        /// <returns>Lista paginada de <see cref="UserDTO"/> envuelta en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="200">Retorna la lista de usuarios correctamente paginada.</response>
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<UserDTO>>))]
         public async Task<IActionResult> GetUsers([FromQuery]UserQueryFilter filters)
         {
             var users = await _userService.GetAllUsersAsync(filters);
@@ -50,7 +65,26 @@ namespace ProyectoMascotas.Api.Controllers
 
             return Ok(response);
         }
+
+        /// <summary>
+        /// Obtiene un usuario por su ID.
+        /// </summary>
+        /// <remarks>
+        /// Este endpoint busca un usuario según su identificador único. 
+        /// Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+        /// Devuelve error 404 si no encuentra el usuario ocn ID 
+        /// </remarks>
+        /// <param name="id">Identificador del usuario a buscar.</param>
+        /// <returns>Objeto <see cref="UserDTO"/> envuelto en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="200">Usuario encontrado y retornado correctamente.</response>
+        /// <response code="400">El ID del usuario no es válido.</response>
+        /// <response code="404">El Usuario NO fue encontrado</response>
+        /// <response code="500">Error interno del servidor.</response>
         [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetUserById(int id)
         {
             
@@ -74,13 +108,46 @@ namespace ProyectoMascotas.Api.Controllers
             }
             catch (Exception err)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, err.Message);
+                int statCode = 500;
+                if(err is BusinessException)
+                {
+                    BusinessException? businessException = err as BusinessException;
+                    if (businessException != null)
+                    {
+                         statCode = businessException.StatusCode;
+                    }
+                        
+                }
+
+                var responsePost = new ResponseData()
+                {
+                    Messages = new Message[] { new() { Type = "Error", Description = err.Message } },
+                    StatusCode = (HttpStatusCode)statCode
+                };
+                
+                return StatusCode(statCode, responsePost);
             }
-            
+
 
         }
 
+
+        /// <summary>
+        /// Inserta un nuevo usuario.
+        /// </summary>
+        /// <remarks>
+        /// Este endpoint recibe un <see cref="UserDTO"/> y lo guarda en la base de datos. 
+        /// Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+        /// </remarks>
+        /// <param name="userDTO">Datos del usuario a crear.</param>
+        /// <returns>El usuario creado envuelto en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="200">Usuario creado exitosamente.</response>
+        /// <response code="400">Error de validación de los datos de entrada.</response>
+        /// <response code="500">Error interno del servidor.</response>
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> InsertUser([FromBody]UserDTO userDTO)
         {
             try
@@ -104,11 +171,45 @@ namespace ProyectoMascotas.Api.Controllers
             }
             catch (Exception err)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, err.Message);
+                int statCode = 500;
+                if (err is BusinessException)
+                {
+                    BusinessException? businessException = err as BusinessException;
+                    if (businessException != null)
+                    {
+                        statCode = businessException.StatusCode;
+                    }
+
+                }
+
+                var responsePost = new ResponseData()
+                {
+                    Messages = new Message[] { new() { Type = "Error", Description = err.Message } },
+                    StatusCode = (HttpStatusCode)statCode
+                };
+
+                return StatusCode(statCode, responsePost);
             }
         }
 
+        /// <summary>
+        /// Autentica un usuario mediante email y contraseña.
+        /// </summary>
+        /// <remarks>
+        /// Devuelve "login Correcto" si las credenciales son válidas y "Login Incorrecto" si fallan. 
+        /// Maneja errores de negocio y del servidor.
+        /// </remarks>
+        /// <param name="loginRequest">Objeto <see cref="LoginRequest"/> con email y contraseña.</param>
+        /// <returns>Mensaje de estado de autenticación.</returns>
+        /// <response code="200">Autenticación correcta.</response>
+        /// <response code="400">Credenciales incorrectas.</response>
+        /// <response code="404">Email ingresado no encontrado.</response>
+        /// <response code="500">Error interno del servidor.</response>
         [HttpPost("login")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(string))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> UserLogin([FromBody] LoginRequest loginRequest)
         {
             try
@@ -122,7 +223,24 @@ namespace ProyectoMascotas.Api.Controllers
             }
             catch (Exception err)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, err.Message);
+                int statCode = 500;
+                if (err is BusinessException)
+                {
+                    BusinessException? businessException = err as BusinessException;
+                    if (businessException != null)
+                    {
+                        statCode = businessException.StatusCode;
+                    }
+
+                }
+
+                var responsePost = new ResponseData()
+                {
+                    Messages = new Message[] { new() { Type = "Error", Description = err.Message } },
+                    StatusCode = (HttpStatusCode)statCode
+                };
+
+                return StatusCode(statCode, responsePost);
             }
         }
 

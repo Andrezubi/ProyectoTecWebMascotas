@@ -20,6 +20,8 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public readonly IBaseRepository<LostPet>? _lostPetRepository;
         public readonly IBaseRepository<Match>? _matchRepository;
         public readonly IBaseRepository<PetPhoto>? _petPhotoRepository;
+
+
         public readonly IUserRepository? _userExtraRepository;
 
         public readonly IDapperContext _dapper;
