@@ -44,7 +44,7 @@ namespace ProyectoMascotas.Core.Services
             {
                 return new ResponseData()
                 {
-                    Messages = new Message[] { new() { Type = "Information", Description = "Registros de posts recuperados correctamente" } },
+                    Messages = new Message[] { new() { Type = "Information", Description = "Registros de Usuarios recuperados correctamente" } },
                     Pagination = pagedUsers,
                     StatusCode = HttpStatusCode.OK
                 };

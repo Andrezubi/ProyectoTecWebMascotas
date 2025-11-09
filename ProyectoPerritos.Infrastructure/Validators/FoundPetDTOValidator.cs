@@ -38,19 +38,19 @@ namespace ProyectoMascotas.Infrastructure.Validators
                 .WithMessage("El sexo debe ser 'Macho' o 'Hembra'.");
 
             RuleFor(p => p.PhotoUrl)
-                .MaximumLength(255);
+                .MaximumLength(255).WithMessage("La URL es demasiado larga");
 
             RuleFor(p => p.MicroChip)
-                .MaximumLength(50);
+                .MaximumLength(50).WithMessage("El codigo de microchip es demasiado largo");
 
             RuleFor(p => p.Description)
-                .MaximumLength(255);
+                .MaximumLength(255).WithMessage("La descripcion excede el limite de caracteres");
 
             RuleFor(p => p.Latitude)
-                .InclusiveBetween(-90, 90);
+                .InclusiveBetween(-90, 90).WithMessage("La latitud no es un valor valido");
 
             RuleFor(p => p.Longitude)
-                .InclusiveBetween(-180, 180);
+                .InclusiveBetween(-180, 180).WithMessage("La longitud no es un valor valido");
 
             RuleFor(p => p.DateFound)
                 .NotEmpty().WithMessage("Debe indicar la fecha en que se encontró la mascota.");

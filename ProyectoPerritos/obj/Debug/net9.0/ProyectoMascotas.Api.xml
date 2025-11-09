@@ -4,6 +4,48 @@
         <name>ProyectoMascotas.Api</name>
     </assembly>
     <members>
+        <member name="M:ProyectoMascotas.Api.Controllers.FoundPetController.GetfoundPets(ProyectoMascotas.Core.QueryFilters.FoundPetQueryFilter)">
+            <summary>
+            Obtiene todas las mascotas encontradas con paginación y filtros opcionales.
+            </summary>
+            <remarks>
+            Este endpoint devuelve una lista de las mascotas encontradas paginada según los filtros especificados. 
+            Se incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios
+            </remarks>
+            <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
+            <returns>Lista paginada de <see cref="T:ProyectoMascotas.Api.Data.FoundPetDTO"/> envuelta en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Retorna la lista de mascotas Encontradas correctamente paginada.</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.FoundPetController.GetfoundPetsById(System.Int32)">
+            <summary>
+            Obtiene una Mascota Encontrada por su ID.
+            </summary>
+            <remarks>
+            Este endpoint busca una mascota encontrada según su identificador único. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra el usuario ocn ID 
+            </remarks>
+            <param name="id">Identificador de la mascota a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.FoundPetDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">La mascota fue encontrada y retornada correctamente.</response>
+            <response code="400">El ID de la mascota encontrada no es válido.</response>
+            <response code="404">El La mascota NO fue encontrado</response>
+            <response code="500">Error interno del servidor.</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.FoundPetController.InsertFoundPet(ProyectoMascotas.Api.Data.FoundPetDTO)">
+            <summary>
+            Inserta una nueva mascota encontrada.
+            </summary>
+            <remarks>
+            Este endpoint recibe un <see cref="T:ProyectoMascotas.Api.Data.FoundPetDTO"/> y lo guarda en la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="foundPetDTO">Datos de la mascota encontrada a crear.</param>
+            <returns>La Mascota creada envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Mascota Encontrada creada exitosamente.</response>
+            <response code="400">Error de validación de los datos de entrada.</response>
+            <response code="500">Error interno del servidor.</response>
+        </member>
         <member name="M:ProyectoMascotas.Api.Controllers.UserController.GetUsers(ProyectoMascotas.Core.QueryFilters.UserQueryFilter)">
             <summary>
             Obtiene todos los usuarios con paginación y filtros opcionales.

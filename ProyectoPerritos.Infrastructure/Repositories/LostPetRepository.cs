@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Enum;
 using ProyectoMascotas.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,21 +13,58 @@ namespace ProyectoMascotas.Infrastructure.Repositories
     public class LostPetRepository:ILostPetRepository
     {
         private readonly MascotasContext _context;
-        public LostPetRepository(MascotasContext context)
+        private readonly IDapperContext _dapper;
+        public LostPetRepository(MascotasContext context, IDapperContext dapper)
         {
             _context = context;
+            _dapper = dapper;
         }
 
         public async Task<IEnumerable<LostPet>> GetAllLostPetsAsync()
         {
-            var lostPets = await _context.LostPets.ToListAsync();
-            return lostPets;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM LostPets
+                ORDER BY Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryAsync<LostPet>(sql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
         }
         public async Task<LostPet> GetLostPetByIdAsync(int id)
         {
-            var lostPet = await _context.LostPets.FirstOrDefaultAsync(x => x.Id == id);
-            return lostPet;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM LostPets
+                WHERE Id=@Id
+                ORDER BY Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryFirstOrDefaultAsync<LostPet>(sql, new {Id=id});
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         public async Task InsertLostPetAsync(LostPet lostPet)
         {

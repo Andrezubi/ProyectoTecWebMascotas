@@ -45,7 +45,7 @@ namespace ProyectoMascotas.Infrastructure.Repositories
 
 
         }
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int ?id)
         {
             try
             {

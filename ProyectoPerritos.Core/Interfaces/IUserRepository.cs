@@ -10,7 +10,7 @@ namespace ProyectoMascotas.Core.Interfaces
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
-        Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByIdAsync(int? id);
         Task<User> GetUserByCiAsync(int? ci);
         Task<User> GetUserByEmailAsync(string ?email);
         Task InsertUserAsync(User user);

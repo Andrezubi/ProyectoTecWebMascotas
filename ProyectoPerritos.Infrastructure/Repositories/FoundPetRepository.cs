@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Enum;
 using ProyectoMascotas.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,21 +13,59 @@ namespace ProyectoMascotas.Infrastructure.Repositories
     public class FoundPetRepository: IFoundPetRepository
     {
         private readonly MascotasContext _context;
-        public FoundPetRepository(MascotasContext context)
+        private readonly IDapperContext _dapper;
+        public FoundPetRepository(MascotasContext context, IDapperContext dapper)
         {
-            _context= context;
+            _context = context;
+            _dapper = dapper;
         }
 
         public async Task<IEnumerable<FoundPet>> GetAllFoundPetsAsync()
         {
-            var foundpets = await _context.FoundPets.ToListAsync();
-            return foundpets;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM FoundPet
+                ORDER BY Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryAsync<FoundPet>(sql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            ;
 
         }
-        public async Task<FoundPet> GetFoundPetByIdAsync(int id)
+        public async Task<FoundPet> GetFoundPetByIdAsync(int ?id)
         {
-            var foundPet = await _context.FoundPets.FirstOrDefaultAsync(x => x.Id == id);
-            return foundPet;
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM FoundPet
+                WHERE Id=@Id
+                ORDER BY Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryFirstOrDefaultAsync<FoundPet>(sql, new {Id=id});
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         public async Task InsertFoundPetAsync(FoundPet foundPet)
         {

@@ -10,7 +10,7 @@ namespace ProyectoMascotas.Core.Interfaces
     public interface IFoundPetRepository
     {
         Task<IEnumerable<FoundPet>> GetAllFoundPetsAsync();
-        Task<FoundPet> GetFoundPetByIdAsync(int id);
+        Task<FoundPet> GetFoundPetByIdAsync(int ?id);
         Task InsertFoundPetAsync(FoundPet foundPet);
         Task UpdateFoundPetAsync(FoundPet foundPet);
         Task DeleteFoundPetAsync(FoundPet foundPet);
