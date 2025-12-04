@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoMascotas.Api.Data;
 using ProyectoMascotas.Api.Responses;
 using ProyectoMascotas.Core.Custom_Entities;
+using ProyectoMascotas.Core.Enum;
 using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
 using ProyectoMascotas.Core.QueryFilters;
@@ -13,7 +15,10 @@ using System.Net;
 
 namespace ProyectoMascotas.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class FoundPetController : ControllerBase
     {
@@ -38,6 +43,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
         /// <returns>Lista paginada de <see cref="FoundPetDTO"/> envuelta en <see cref="ApiResponse{T}"/>.</returns>
         /// <response code="200">Retorna la lista de mascotas Encontradas correctamente paginada.</response>
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<FoundPetDTO>>))]
         public async Task<IActionResult> GetfoundPets([FromQuery] FoundPetQueryFilter filters)
@@ -78,6 +84,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="400">El ID de la mascota encontrada no es válido.</response>
         /// <response code="404">El La mascota NO fue encontrado</response>
         /// <response code="500">Error interno del servidor.</response>
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<FoundPetDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -139,6 +146,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="200">Mascota Encontrada creada exitosamente.</response>
         /// <response code="400">Error de validación de los datos de entrada.</response>
         /// <response code="500">Error interno del servidor.</response>
+        [Authorize(Roles = $"{nameof(RoleType.Administrator)},{nameof(RoleType.Consumer)}")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<FoundPetDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

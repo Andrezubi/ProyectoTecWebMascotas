@@ -205,6 +205,219 @@
         }
       }
     },
+    "/api/v{version}/FoundPet": {
+      "get": {
+        "tags": [
+          "FoundPet"
+        ],
+        "summary": "Obtiene todas las mascotas encontradas con paginación y filtros opcionales.",
+        "description": "Este endpoint devuelve una lista de las mascotas encontradas paginada según los filtros especificados. \r\nSe incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios",
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Species",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Color",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Breed",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sex",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "DateFound",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "MicroChip",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "Cantidad de registros por pagina",
+            "schema": {
+              "type": "integer",
+              "description": "Cantidad de registros por pagina",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "description": "Numero de pagina a mostrar",
+            "schema": {
+              "type": "integer",
+              "description": "Numero de pagina a mostrar",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de mascotas Encontradas correctamente paginada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOIEnumerableApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOIEnumerableApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOIEnumerableApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FoundPet"
+        ],
+        "summary": "Inserta una nueva mascota encontrada.",
+        "description": "Este endpoint recibe un ProyectoMascotas.Api.Data.FoundPetDTO y lo guarda en la base de datos. \r\nDevuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos de la mascota encontrada a crear.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoundPetDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoundPetDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoundPetDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoundPetDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mascota Encontrada creada exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación de los datos de entrada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
     "/api/FoundPet/{id}": {
       "get": {
         "tags": [
@@ -291,6 +504,748 @@
         }
       }
     },
+    "/api/v{version}/FoundPet/{id}": {
+      "get": {
+        "tags": [
+          "FoundPet"
+        ],
+        "summary": "Obtiene una Mascota Encontrada por su ID.",
+        "description": "Este endpoint busca una mascota encontrada según su identificador único. \r\nDevuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.\r\nDevuelve error 404 si no encuentra el usuario ocn ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador de la mascota a buscar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La mascota fue encontrada y retornada correctamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoundPetDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "El ID de la mascota encontrada no es válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El La mascota NO fue encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/LostPet": {
+      "get": {
+        "tags": [
+          "LostPet"
+        ],
+        "summary": "Obtiene todas las mascotas perdidas con paginación y filtros opcionales.",
+        "description": "Este endpoint devuelve una lista de las mascotas perdidas paginada según los filtros especificados. \r\nSe incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios",
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Species",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Color",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Breed",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sex",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "DateLost",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "MicroChip",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "Cantidad de registros por pagina",
+            "schema": {
+              "type": "integer",
+              "description": "Cantidad de registros por pagina",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "description": "Numero de pagina a mostrar",
+            "schema": {
+              "type": "integer",
+              "description": "Numero de pagina a mostrar",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de mascotas Perdidas correctamente paginada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOIEnumerableApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOIEnumerableApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOIEnumerableApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "LostPet"
+        ],
+        "summary": "Inserta una nueva mascota perdida.",
+        "description": "Este endpoint recibe un ProyectoMascotas.Api.Data.LostPetDTO y lo guarda en la base de datos. \r\nDevuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.",
+        "requestBody": {
+          "description": "Datos de la mascota perdida a crear.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mascota Perdida creada exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación de los datos de entrada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/v{version}/LostPet": {
+      "get": {
+        "tags": [
+          "LostPet"
+        ],
+        "summary": "Obtiene todas las mascotas perdidas con paginación y filtros opcionales.",
+        "description": "Este endpoint devuelve una lista de las mascotas perdidas paginada según los filtros especificados. \r\nSe incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios",
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Species",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Color",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Breed",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sex",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "DateLost",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "MicroChip",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "Cantidad de registros por pagina",
+            "schema": {
+              "type": "integer",
+              "description": "Cantidad de registros por pagina",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "description": "Numero de pagina a mostrar",
+            "schema": {
+              "type": "integer",
+              "description": "Numero de pagina a mostrar",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de mascotas Perdidas correctamente paginada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOIEnumerableApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOIEnumerableApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOIEnumerableApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "LostPet"
+        ],
+        "summary": "Inserta una nueva mascota perdida.",
+        "description": "Este endpoint recibe un ProyectoMascotas.Api.Data.LostPetDTO y lo guarda en la base de datos. \r\nDevuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos de la mascota perdida a crear.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LostPetDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mascota Perdida creada exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación de los datos de entrada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/LostPet/{id}": {
+      "get": {
+        "tags": [
+          "LostPet"
+        ],
+        "summary": "Obtiene una Mascota Perdida por su ID.",
+        "description": "Este endpoint busca una mascota perdida según su identificador único. \r\nDevuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.\r\nDevuelve error 404 si no encuentra el usuario ocn ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador de la mascota a buscar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La mascota fue perdida y retornada correctamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "El ID de la mascota perdida no es válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El La mascota NO fue encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/v{version}/LostPet/{id}": {
+      "get": {
+        "tags": [
+          "LostPet"
+        ],
+        "summary": "Obtiene una Mascota Perdida por su ID.",
+        "description": "Este endpoint busca una mascota perdida según su identificador único. \r\nDevuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.\r\nDevuelve error 404 si no encuentra el usuario ocn ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador de la mascota a buscar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La mascota fue perdida y retornada correctamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LostPetDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "El ID de la mascota perdida no es válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El La mascota NO fue encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/Token/TestConeccion": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Token/Config": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/User": {
       "get": {
         "tags": [
@@ -358,6 +1313,163 @@
         ],
         "summary": "Inserta un nuevo usuario.",
         "description": "Este endpoint recibe un ProyectoMascotas.Api.Data.UserDTO y lo guarda en la base de datos. \r\nDevuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.",
+        "requestBody": {
+          "description": "Datos del usuario a crear.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario creado exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación de los datos de entrada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/v{version}/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Obtiene todos los usuarios con paginación y filtros opcionales.",
+        "description": "Este endpoint devuelve una lista de usuarios paginada según los filtros especificados. \r\nSe incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios",
+        "parameters": [
+          {
+            "name": "Name",
+            "in": "query",
+            "description": "Id del usuario",
+            "schema": {
+              "type": "string",
+              "description": "Id del usuario"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "Cantidad de registros por pagina",
+            "schema": {
+              "type": "integer",
+              "description": "Cantidad de registros por pagina",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "description": "Numero de pagina a mostrar",
+            "schema": {
+              "type": "integer",
+              "description": "Numero de pagina a mostrar",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de usuarios correctamente paginada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOIEnumerableApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOIEnumerableApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOIEnumerableApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Inserta un nuevo usuario.",
+        "description": "Este endpoint recibe un ProyectoMascotas.Api.Data.UserDTO y lo guarda en la base de datos. \r\nDevuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Datos del usuario a crear.",
           "content": {
@@ -516,81 +1628,76 @@
         }
       }
     },
-    "/api/User/login": {
-      "post": {
+    "/api/v{version}/User/{id}": {
+      "get": {
         "tags": [
           "User"
         ],
-        "summary": "Autentica un usuario mediante email y contraseña.",
-        "description": "Devuelve \"login Correcto\" si las credenciales son válidas y \"Login Incorrecto\" si fallan. \r\nManeja errores de negocio y del servidor.",
-        "requestBody": {
-          "description": "Objeto ProyectoMascotas.Core.Custom_Entities.LoginRequest con email y contraseña.",
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
+        "summary": "Obtiene un usuario por su ID.",
+        "description": "Este endpoint busca un usuario según su identificador único. \r\nDevuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.\r\nDevuelve error 404 si no encuentra el usuario ocn ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador del usuario a buscar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "Autenticación correcta.",
+            "description": "Usuario encontrado y retornado correctamente.",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Credenciales incorrectas.",
+            "description": "El ID del usuario no es válido.",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
           },
           "404": {
-            "description": "Email ingresado no encontrado.",
+            "description": "El Usuario NO fue encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -726,15 +1833,109 @@
         },
         "additionalProperties": false
       },
-      "LoginRequest": {
+      "LostPetDTO": {
         "type": "object",
         "properties": {
-          "email": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "species": {
             "type": "string",
             "nullable": true
           },
-          "password": {
+          "name": {
             "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "breed": {
+            "type": "string",
+            "nullable": true
+          },
+          "sex": {
+            "type": "string",
+            "nullable": true
+          },
+          "microChip": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dateLost": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "rewardAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LostPetDTOApiResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LostPetDTO"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LostPetDTOIEnumerableApiResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LostPetDTO"
+            },
+            "nullable": true
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
             "nullable": true
           }
         },
@@ -809,6 +2010,14 @@
         },
         "additionalProperties": { }
       },
+      "RoleType": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "UserDTO": {
         "type": "object",
         "properties": {
@@ -839,6 +2048,9 @@
           "photoUrl": {
             "type": "string",
             "nullable": true
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleType"
           }
         },
         "additionalProperties": false
@@ -880,6 +2092,20 @@
             "items": {
               "$ref": "#/components/schemas/Message"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserLoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
             "nullable": true
           }
         },

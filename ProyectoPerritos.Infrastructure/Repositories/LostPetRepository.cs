@@ -28,7 +28,7 @@ namespace ProyectoMascotas.Infrastructure.Repositories
                 {
                     DatabaseProvider.SqlServer => @"
                 SELECT *
-                FROM LostPets
+                FROM LostPet
                 ORDER BY Id",
 
                     DatabaseProvider.MySql => @"",
@@ -51,7 +51,7 @@ namespace ProyectoMascotas.Infrastructure.Repositories
                 {
                     DatabaseProvider.SqlServer => @"
                 SELECT *
-                FROM LostPets
+                FROM LostPet
                 WHERE Id=@Id
                 ORDER BY Id",
 

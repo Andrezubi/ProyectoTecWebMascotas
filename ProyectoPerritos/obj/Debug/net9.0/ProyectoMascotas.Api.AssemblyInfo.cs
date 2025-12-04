@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("65ecd46b-985c-4fa0-b5d3-a22325b38bc8")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProyectoMascotas.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9802966ba5180f647f8615378981810b7c559a52")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+784661324eb9400538ab24799533053db4155a05")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProyectoMascotas.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProyectoMascotas.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

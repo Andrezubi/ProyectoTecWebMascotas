@@ -359,3 +359,6 @@ D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Debug
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\bin\Debug\net9.0\MySqlConnector.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\bin\Debug\net9.0\Dapper.dll
+D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.Versioning.dll
+D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll
+D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

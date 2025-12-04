@@ -1,31 +1,41 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using ProyectoMascotas.Api.Data;
 using ProyectoMascotas.Api.Responses;
 using ProyectoMascotas.Core.Custom_Entities;
+using ProyectoMascotas.Core.Enum;
 using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
 using ProyectoMascotas.Core.QueryFilters;
 using ProyectoMascotas.Infrastructure.Validators;
+using SocialMedia.Core.Entities;
 using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace ProyectoMascotas.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IValidationService _validationService;
-        public UserController(IUserService userService, IMapper mapper, IValidationService validationService)
+        private readonly ISecurityService _securityService;
+        private readonly IPasswordService _passwordService;
+        public UserController(IUserService userService, IMapper mapper, IValidationService validationService, ISecurityService securityService, IPasswordService passwordService)
         {
             _userService = userService;
             _mapper = mapper;
             _validationService = validationService;
+            _securityService = securityService;
+            _passwordService = passwordService;
         }
 
 
@@ -41,6 +51,8 @@ namespace ProyectoMascotas.Api.Controllers
         /// <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
         /// <returns>Lista paginada de <see cref="UserDTO"/> envuelta en <see cref="ApiResponse{T}"/>.</returns>
         /// <response code="200">Retorna la lista de usuarios correctamente paginada.</response>
+        [Authorize(Roles = nameof(RoleType.Administrator))]
+
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<UserDTO>>))]
         public async Task<IActionResult> GetUsers([FromQuery]UserQueryFilter filters)
@@ -80,6 +92,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="400">El ID del usuario no es válido.</response>
         /// <response code="404">El Usuario NO fue encontrado</response>
         /// <response code="500">Error interno del servidor.</response>
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -144,6 +157,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="200">Usuario creado exitosamente.</response>
         /// <response code="400">Error de validación de los datos de entrada.</response>
         /// <response code="500">Error interno del servidor.</response>
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -160,8 +174,13 @@ namespace ProyectoMascotas.Api.Controllers
                 {
                     return BadRequest(new { Errors = validationResult.Errors });
                 }
-                
 
+
+                var security = _mapper.Map<Security>(userDTO);
+                security.Password = _passwordService.Hash(security.Password);
+                await _securityService.RegisterUser(security);
+
+                userDTO.Password=security.Password;
                 var user = _mapper.Map<User>(userDTO);
                 await _userService.InsertUserAsync(user);
 
@@ -192,57 +211,7 @@ namespace ProyectoMascotas.Api.Controllers
             }
         }
 
-        /// <summary>
-        /// Autentica un usuario mediante email y contraseña.
-        /// </summary>
-        /// <remarks>
-        /// Devuelve "login Correcto" si las credenciales son válidas y "Login Incorrecto" si fallan. 
-        /// Maneja errores de negocio y del servidor.
-        /// </remarks>
-        /// <param name="loginRequest">Objeto <see cref="LoginRequest"/> con email y contraseña.</param>
-        /// <returns>Mensaje de estado de autenticación.</returns>
-        /// <response code="200">Autenticación correcta.</response>
-        /// <response code="400">Credenciales incorrectas.</response>
-        /// <response code="404">Email ingresado no encontrado.</response>
-        /// <response code="500">Error interno del servidor.</response>
-        [HttpPost("login")]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(string))]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> UserLogin([FromBody] LoginRequest loginRequest)
-        {
-            try
-            {
-                if(await _userService.loginAsync(loginRequest.Email, loginRequest.Password))
-                {
-                    return Ok("login Correcto");
-                }
-                return BadRequest("Login Incorrecto");
-
-            }
-            catch (Exception err)
-            {
-                int statCode = 500;
-                if (err is BusinessException)
-                {
-                    BusinessException? businessException = err as BusinessException;
-                    if (businessException != null)
-                    {
-                        statCode = businessException.StatusCode;
-                    }
-
-                }
-
-                var responsePost = new ResponseData()
-                {
-                    Messages = new Message[] { new() { Type = "Error", Description = err.Message } },
-                    StatusCode = (HttpStatusCode)statCode
-                };
-
-                return StatusCode(statCode, responsePost);
-            }
-        }
+      
 
 
 

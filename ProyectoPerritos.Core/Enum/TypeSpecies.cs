@@ -8,6 +8,6 @@ namespace ProyectoMascotas.Core.Enum
 {
     public enum TypeSpecies
     {
-        Gato,Perro,Loro
+        Gato,Perro,Loro,Otro
     }
 }

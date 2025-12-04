@@ -1,4 +1,6 @@
 ﻿using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Custom_Entities;
+using ProyectoMascotas.Core.QueryFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace ProyectoMascotas.Core.Interfaces.ServiceInterfaces
 {
     public interface ILostPetService
     {
-        Task<IEnumerable<LostPet>> GetAllLostPetsAsync();
+        Task<ResponseData> GetAllLostPetsAsync(LostPetQueryFilter filters);
         Task<LostPet> GetLostPetByIdAsync(int id);
         Task InsertLostPetAsync(LostPet lostPet);
         Task UpdateLostPetAsync(LostPet lostPet);
