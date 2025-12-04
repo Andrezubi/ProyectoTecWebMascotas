@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoMascotas.Core.Enum;
+using System;
 using System.Collections.Generic;
 
 namespace ProyectoMascotas.Api.Data;
@@ -18,4 +19,6 @@ public  class UserDTO
     public string Password { get; set; }
 
     public string? PhotoUrl { get; set; }
+
+    public RoleType Role { get; set; }
 }

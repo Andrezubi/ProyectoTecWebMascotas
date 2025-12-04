@@ -22,12 +22,22 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public readonly IBaseRepository<PetPhoto>? _petPhotoRepository;
 
 
+
+
         public readonly IUserRepository? _userExtraRepository;
         public readonly ILostPetRepository _lostPetExtraRepository;
         public readonly IFoundPetRepository _foundPetExtraRepository;
 
         public readonly IDapperContext _dapper;
         private IDbContextTransaction? _efTransaction;
+
+
+
+        private readonly ISecurityRepository _securityRepository;
+
+        public ISecurityRepository SecurityRepository =>
+            _securityRepository ?? new SecurityRepository(_context);
+
 
         public UnitOfWork(MascotasContext context, IDapperContext dapper)
         {

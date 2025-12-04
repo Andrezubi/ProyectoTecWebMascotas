@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SocialMedia.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -23,6 +24,8 @@ public partial class MascotasContext : DbContext
     public virtual DbSet<Match> Matches { get; set; }
 
     public virtual DbSet<PetPhoto> PetPhotos { get; set; }
+
+    public virtual DbSet<Security> Securities { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 

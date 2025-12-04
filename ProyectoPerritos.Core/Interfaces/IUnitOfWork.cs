@@ -18,7 +18,7 @@ namespace ProyectoMascotas.Core.Interfaces
         IBaseRepository<Match> MatchRepository { get; }
         IBaseRepository<PetPhoto>PetPhotoRepository { get; }
 
-
+        ISecurityRepository SecurityRepository { get; }
         IUserRepository UserRepositoryExtra { get; }
         ILostPetRepository LostPetRepositoryExtra { get; }
         IFoundPetRepository FoundPetRepositoryExtra { get; }
