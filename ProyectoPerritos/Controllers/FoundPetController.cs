@@ -16,7 +16,6 @@ using System.Net;
 namespace ProyectoMascotas.Api.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -43,6 +42,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
         /// <returns>Lista paginada de <see cref="FoundPetDTO"/> envuelta en <see cref="ApiResponse{T}"/>.</returns>
         /// <response code="200">Retorna la lista de mascotas Encontradas correctamente paginada.</response>
+        /// <response code="500">Error interno del servidor.</response>
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<FoundPetDTO>>))]
@@ -146,6 +146,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="200">Mascota Encontrada creada exitosamente.</response>
         /// <response code="400">Error de validación de los datos de entrada.</response>
         /// <response code="500">Error interno del servidor.</response>
+        /// <response code="401">Error de autorizacion</response>
         [Authorize(Roles = $"{nameof(RoleType.Administrator)},{nameof(RoleType.Consumer)}")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<FoundPetDTO>))]

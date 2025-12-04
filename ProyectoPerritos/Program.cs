@@ -112,9 +112,34 @@ namespace ProyectoMascotas.Api
                 options.IncludeXmlComments(xmlPath);
 
                 options.EnableAnnotations();
+
+                //habilitar jwt en swagger
+                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Ingrese: Bearer {token}"
+                });
+
+                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
             });
-
-
 
             builder.Services.AddControllers(options =>
             {
@@ -230,19 +255,7 @@ namespace ProyectoMascotas.Api
 
             app.Run();
 
-
-
-
-
-
-
-
         }
-
-
-
-
-
 
     }
 

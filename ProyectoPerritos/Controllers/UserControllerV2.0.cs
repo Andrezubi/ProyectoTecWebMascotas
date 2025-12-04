@@ -10,57 +10,69 @@ using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
 using ProyectoMascotas.Core.QueryFilters;
 using ProyectoMascotas.Infrastructure.Validators;
+using SocialMedia.Core.Entities;
 using System.Net;
 
 namespace ProyectoMascotas.Api.Controllers
 {
     [Authorize]
+    
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class LostPetController : ControllerBase
+    public class UserControllerV2 : ControllerBase
     {
-        private readonly ILostPetService _lostPetService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IValidationService _validationService;
-        public LostPetController(ILostPetService lostPetService, IMapper mapper, IValidationService validationService)
+        private readonly ISecurityService _securityService;
+        private readonly IPasswordService _passwordService;
+        public UserControllerV2(IUserService userService, IMapper mapper, IValidationService validationService, ISecurityService securityService, IPasswordService passwordService)
         {
-            _lostPetService = lostPetService;
+            _userService = userService;
             _mapper = mapper;
             _validationService = validationService;
+            _securityService = securityService;
+            _passwordService = passwordService;
         }
 
 
+
+
         /// <summary>
-        /// Obtiene todas las mascotas perdidas con paginación y filtros opcionales.
+        /// Obtiene todos los usuarios con paginación y filtros opcionales.
         /// </summary>
         /// <remarks>
-        /// Este endpoint devuelve una lista de las mascotas perdidas paginada según los filtros especificados. 
+        /// Este endpoint devuelve una lista de usuarios paginada según los filtros especificados. 
         /// Se incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios
         /// </remarks>
         /// <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
-        /// <returns>Lista paginada de <see cref="LostPetDTO"/> envuelta en <see cref="ApiResponse{T}"/>.</returns>
-        /// <response code="200">Retorna la lista de mascotas Perdidas correctamente paginada.</response>
-        /// <response code="500">Error interno del servidor.</response>
-        [AllowAnonymous]
+        /// <returns>Lista paginada de <see cref="UserDTO"/> envuelta en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="200">Retorna la lista de usuarios correctamente paginada.</response>
+        /// <response code="401">Error de falta autorizacion</response>
+        /// <response code="500">Error interno de servidor</response>
+        [Authorize(Roles = nameof(RoleType.Administrator))]
+
         [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<LostPetDTO>>))]
-        public async Task<IActionResult> GetlostPets([FromQuery] LostPetQueryFilter filters)
+        [MapToApiVersion("2.0")]
+
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<UserDTO>>))]
+        public async Task<IActionResult> GetUsers([FromQuery] UserQueryFilter filters)
         {
-            var lostPets = await _lostPetService.GetAllLostPetsAsync(filters);
-            var lostPetsDTO = _mapper.Map<IEnumerable<LostPetDTO>>(lostPets.Pagination);
+            var users = await _userService.GetAllUsersAsync(filters);
+            var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users.Pagination);
 
 
             var pagination = new Pagination
             {
-                TotalCount = lostPets.Pagination.TotalCount,
-                PageSize = lostPets.Pagination.PageSize,
-                CurrentPage = lostPets.Pagination.CurrentPage,
-                TotalPages = lostPets.Pagination.TotalPages,
-                HasNextPage = lostPets.Pagination.HasNextPage,
-                HasPreviousPage = lostPets.Pagination.HasPreviousPage
+                TotalCount = users.Pagination.TotalCount,
+                PageSize = users.Pagination.PageSize,
+                CurrentPage = users.Pagination.CurrentPage,
+                TotalPages = users.Pagination.TotalPages,
+                HasNextPage = users.Pagination.HasNextPage,
+                HasPreviousPage = users.Pagination.HasPreviousPage
             };
-            var response = new ApiResponse<IEnumerable<LostPetDTO>>(lostPetsDTO)
+            var response = new ApiResponse<IEnumerable<UserDTO>>(usersDTO)
             {
                 Pagination = pagination
             };
@@ -68,28 +80,30 @@ namespace ProyectoMascotas.Api.Controllers
             return Ok(response);
         }
 
-
         /// <summary>
-        /// Obtiene una Mascota Perdida por su ID.
+        /// Obtiene un usuario por su ID.
         /// </summary>
         /// <remarks>
-        /// Este endpoint busca una mascota perdida según su identificador único. 
+        /// Este endpoint busca un usuario según su identificador único. 
         /// Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
         /// Devuelve error 404 si no encuentra el usuario ocn ID 
         /// </remarks>
-        /// <param name="id">Identificador de la mascota a buscar.</param>
-        /// <returns>Objeto <see cref="LostPetDTO"/> envuelto en <see cref="ApiResponse{T}"/>.</returns>
-        /// <response code="200">La mascota fue perdida y retornada correctamente.</response>
-        /// <response code="400">El ID de la mascota perdida no es válido.</response>
-        /// <response code="404">El La mascota NO fue encontrado</response>
+        /// <param name="id">Identificador del usuario a buscar.</param>
+        /// <returns>Objeto <see cref="UserDTO"/> envuelto en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="200">Usuario encontrado y retornado correctamente.</response>
+        /// <response code="400">El ID del usuario no es válido.</response>
+        /// <response code="404">El Usuario NO fue encontrado</response>
         /// <response code="500">Error interno del servidor.</response>
-        [AllowAnonymous]
+        /// <response code="401">Error de falta autorizacion</response>
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [HttpGet("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<LostPetDTO>))]
+        [MapToApiVersion("2.0")]
+
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> GetlostPetsById(int id)
+        public async Task<IActionResult> GetUserById(int id)
         {
 
             try
@@ -102,10 +116,10 @@ namespace ProyectoMascotas.Api.Controllers
                     return BadRequest(new { Errors = validationResult.Errors });
                 }
 
-                var lostPets = await _lostPetService.GetLostPetByIdAsync(id);
-                var lostPetsDTO = _mapper.Map<LostPetDTO>(lostPets);
+                var user = await _userService.GetUserByIdAsync(id);
+                var userDTO = _mapper.Map<UserDTO>(user);
                 ;
-                var response = new ApiResponse<LostPetDTO>(lostPetsDTO);
+                var response = new ApiResponse<UserDTO>(userDTO);
 
                 return Ok(response);
 
@@ -132,32 +146,36 @@ namespace ProyectoMascotas.Api.Controllers
                 return StatusCode(statCode, responsePost);
             }
 
+
         }
+
+
         /// <summary>
-        /// Inserta una nueva mascota perdida.
+        /// Inserta un nuevo usuario.
         /// </summary>
         /// <remarks>
-        /// Este endpoint recibe un <see cref="LostPetDTO"/> y lo guarda en la base de datos. 
+        /// Este endpoint recibe un <see cref="UserDTO"/> y lo guarda en la base de datos. 
         /// Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
         /// </remarks>
-        /// <param name="lostPetDTO">Datos de la mascota perdida a crear.</param>
-        /// <returns>La Mascota creada envuelto en <see cref="ApiResponse{T}"/>.</returns>
-        /// <response code="200">Mascota Perdida creada exitosamente.</response>
+        /// <param name="userDTO">Datos del usuario a crear.</param>
+        /// <returns>El usuario creado envuelto en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="200">Usuario creado exitosamente.</response>
         /// <response code="400">Error de validación de los datos de entrada.</response>
         /// <response code="500">Error interno del servidor.</response>
-        /// <response code="401">Error de autorizacion</response>
-        [Authorize(Roles = $"{nameof(RoleType.Administrator)},{nameof(RoleType.Consumer)}")]
+        [AllowAnonymous]
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<LostPetDTO>))]
+        [MapToApiVersion("2.0")]
+
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> InsertLostPet([FromBody] LostPetDTO lostPetDTO)
+        public async Task<IActionResult> InsertUser([FromBody] UserDTO userDTO)
         {
             try
             {
                 // La validación automática se hace mediante el filtro
                 // Esta validación manual es opcional
-                var validationResult = await _validationService.ValidateAsync(lostPetDTO);
+                var validationResult = await _validationService.ValidateAsync(userDTO);
 
                 if (!validationResult.IsValid)
                 {
@@ -165,10 +183,15 @@ namespace ProyectoMascotas.Api.Controllers
                 }
 
 
-                var lostPet = _mapper.Map<LostPet>(lostPetDTO);
-                await _lostPetService.InsertLostPetAsync(lostPet);
+                var security = _mapper.Map<Security>(userDTO);
+                security.Password = _passwordService.Hash(security.Password);
+                await _securityService.RegisterUser(security);
 
-                var response = new ApiResponse<LostPetDTO>(lostPetDTO);
+                userDTO.Password = security.Password;
+                var user = _mapper.Map<User>(userDTO);
+                await _userService.InsertUserAsync(user);
+
+                var response = new ApiResponse<UserDTO>(userDTO);
 
                 return Ok(response);
             }
@@ -189,12 +212,12 @@ namespace ProyectoMascotas.Api.Controllers
                 {
                     Messages = new Message[] { new() { Type = "Error", Description = err.Message } },
                     StatusCode = (HttpStatusCode)statCode
-                    
                 };
 
                 return StatusCode(statCode, responsePost);
             }
         }
+
 
 
 

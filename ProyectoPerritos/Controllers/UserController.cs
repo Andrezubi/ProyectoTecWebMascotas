@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 namespace ProyectoMascotas.Api.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -51,9 +51,12 @@ namespace ProyectoMascotas.Api.Controllers
         /// <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
         /// <returns>Lista paginada de <see cref="UserDTO"/> envuelta en <see cref="ApiResponse{T}"/>.</returns>
         /// <response code="200">Retorna la lista de usuarios correctamente paginada.</response>
+        /// <response code="401">Error de falta autorizacion</response>
+        /// <response code="500">Error interno de servidor</response>
         [Authorize(Roles = nameof(RoleType.Administrator))]
 
         [HttpGet]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<UserDTO>>))]
         public async Task<IActionResult> GetUsers([FromQuery]UserQueryFilter filters)
         {
@@ -92,8 +95,10 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="400">El ID del usuario no es válido.</response>
         /// <response code="404">El Usuario NO fue encontrado</response>
         /// <response code="500">Error interno del servidor.</response>
+        /// <response code="401">Error de falta autorizacion</response>
         [Authorize(Roles = nameof(RoleType.Administrator))]
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -159,6 +164,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="500">Error interno del servidor.</response>
         [AllowAnonymous]
         [HttpPost]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
