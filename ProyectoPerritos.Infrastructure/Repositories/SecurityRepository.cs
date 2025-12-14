@@ -19,6 +19,11 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         {
             return await _entities.FirstOrDefaultAsync(x => x.Login == login.Email);
         }
+
+        public async Task<Security>GetSecurityByEmailAsync(string email)
+        {
+            return await _entities.FirstOrDefaultAsync(x => x.Login == email);
+        }
     }
 
     

@@ -137,6 +137,56 @@
             <response code="400">Error de validación de los datos de entrada.</response>
             <response code="500">Error interno del servidor.</response>
         </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserController.GetPostsOfUser(System.Int32)">
+            <summary>
+            Obtiene todas las publicaciones de un usuario por id
+            </summary>
+            <remarks>
+            Este endpoint busca las publicaciones de un usuario segun su identificador único. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra el usuario ocn ID
+            Devuelve 401 si falla la autorizacion
+            </remarks>
+            <param name="id">Identificador del usuario de los posts a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Usuario encontrado y retornado correctamente.</response>
+            <response code="400">El ID del usuario no es válido.</response>
+            <response code="404">El Usuario NO fue encontrado</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserController.UpdateUser(ProyectoMascotas.Api.Data.UserDTO)">
+            <summary>
+            Actualiza los datos de un usuario.
+            </summary>
+            <remarks>
+            Este endpoint recibe un <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> y guarda los cambios necesarios al usuario a la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="userDTO">Datos del usuario a actualizar.</param>
+            <returns>El usuario actualizado envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Usuario creado exitosamente.</response>
+            <response code="400">Error de validación de los datos de entrada.</response>
+            <response code="500">Error interno del servidor.</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserController.DeleteUser(System.Int32)">
+            <summary>
+            Borra un Usuario por ID.
+            </summary>
+            <remarks>
+            Este endpoint busca un usuario según su identificador único y lo elimina de la base de datos. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra el usuario ocn ID 
+            Devuelve un ok de tipo 204 en caso de que se haya borrado exitosamente
+            </remarks>
+            <param name="id">Identificador del usuario a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="204">Usuario encontrado y borrado correctamente.</response>
+            <response code="400">El ID del usuario no es válido.</response>
+            <response code="404">El Usuario NO fue encontrado</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
+        </member>
         <member name="M:ProyectoMascotas.Api.Controllers.UserControllerV2.GetUsers(ProyectoMascotas.Core.QueryFilters.UserQueryFilter)">
             <summary>
             Obtiene todos los usuarios con paginación y filtros opcionales.

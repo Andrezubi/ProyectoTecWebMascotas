@@ -26,7 +26,7 @@ namespace ProyectoMascotas.Core.Services
         {
             return await _unitOfWork.PetPhotoRepository.GetById(id);
         }
-        public async Task InsertPetPhotoAsync(PetPhoto petPhoto)
+        public async Task InsertPetPhotoAsync(PetPhoto petPhoto,string currentEmail, string Role)
         {
             await _unitOfWork.PetPhotoRepository.Add(petPhoto);
             await _unitOfWork.SaveChangesAsync();

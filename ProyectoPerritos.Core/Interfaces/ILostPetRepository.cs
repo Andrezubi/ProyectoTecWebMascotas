@@ -14,5 +14,6 @@ namespace ProyectoMascotas.Core.Interfaces
         Task InsertLostPetAsync(LostPet lostPet);
         Task UpdateLostPetAsync(LostPet lostPet);
         Task DeleteLostPetAsync(LostPet lostPet);
+        Task<IEnumerable<LostPet>> GetPetsByUserId(int userId);
     }
 }

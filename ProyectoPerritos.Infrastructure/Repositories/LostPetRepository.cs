@@ -80,5 +80,30 @@ namespace ProyectoMascotas.Infrastructure.Repositories
             _context.LostPets.Remove(lostPet);
 
         }
+
+
+        public async Task<IEnumerable<LostPet>> GetPetsByUserId(int userId)
+        {
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM LostPet
+                WHERE UserId=@UserId
+                ORDER BY Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryAsync<LostPet>(sql, new { UserId = userId });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

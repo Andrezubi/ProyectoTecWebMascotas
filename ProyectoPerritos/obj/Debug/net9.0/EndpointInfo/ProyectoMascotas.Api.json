@@ -707,10 +707,10 @@
           {
             "name": "Name",
             "in": "query",
-            "description": "Id del usuario",
+            "description": "Nombre del usuario",
             "schema": {
               "type": "string",
-              "description": "Id del usuario"
+              "description": "Nombre del usuario"
             }
           },
           {
@@ -764,7 +764,24 @@
             }
           },
           "401": {
-            "description": "Error de falta autorizacion"
+            "description": "Error de falta autorizacion",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "500": {
             "description": "Error interno de servidor"
@@ -789,6 +806,93 @@
         ],
         "requestBody": {
           "description": "Datos del usuario a crear.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario creado exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación de los datos de entrada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Actualiza los datos de un usuario.",
+        "description": "Este endpoint recibe un ProyectoMascotas.Api.Data.UserDTO y guarda los cambios necesarios al usuario a la base de datos. \r\nDevuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos del usuario a actualizar.",
           "content": {
             "application/json-patch+json": {
               "schema": {
@@ -947,11 +1051,254 @@
               }
             }
           },
+          "401": {
+            "description": "Error de falta autorizacion",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Error interno del servidor."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Borra un Usuario por ID.",
+        "description": "Este endpoint busca un usuario según su identificador único y lo elimina de la base de datos. \r\nDevuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.\r\nDevuelve error 404 si no encuentra el usuario ocn ID \r\nDevuelve un ok de tipo 204 en caso de que se haya borrado exitosamente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador del usuario a buscar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuario encontrado y borrado correctamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "El ID del usuario no es válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El Usuario NO fue encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Error de falta autorizacion"
+            "description": "Error de falta autorizacion",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/v{version}/User/{id}/posts": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Obtiene todas las publicaciones de un usuario por id",
+        "description": "Este endpoint busca las publicaciones de un usuario segun su identificador único. \r\nDevuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.\r\nDevuelve error 404 si no encuentra el usuario ocn ID\r\nDevuelve 401 si falla la autorizacion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador del usuario de los posts a buscar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario encontrado y retornado correctamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostsApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostsApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostsApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "El ID del usuario no es válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El Usuario NO fue encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error de falta autorizacion",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor."
           }
         }
       }
@@ -967,10 +1314,10 @@
           {
             "name": "Name",
             "in": "query",
-            "description": "Id del usuario",
+            "description": "Nombre del usuario",
             "schema": {
               "type": "string",
-              "description": "Id del usuario"
+              "description": "Nombre del usuario"
             }
           },
           {
@@ -1024,7 +1371,24 @@
             }
           },
           "401": {
-            "description": "Error de falta autorizacion"
+            "description": "Error de falta autorizacion",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "500": {
             "description": "Error interno de servidor"
@@ -1211,7 +1575,24 @@
             "description": "Error interno del servidor."
           },
           "401": {
-            "description": "Error de falta autorizacion"
+            "description": "Error de falta autorizacion",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1219,6 +1600,89 @@
   },
   "components": {
     "schemas": {
+      "FoundPet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "species": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "breed": {
+            "type": "string",
+            "nullable": true
+          },
+          "sex": {
+            "type": "string",
+            "nullable": true
+          },
+          "photoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "microChip": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dateFound": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
+          },
+          "petPhotos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PetPhoto"
+            },
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
       "FoundPetDTO": {
         "type": "object",
         "properties": {
@@ -1323,6 +1787,89 @@
               "$ref": "#/components/schemas/Message"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LostPet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "species": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "breed": {
+            "type": "string",
+            "nullable": true
+          },
+          "sex": {
+            "type": "string",
+            "nullable": true
+          },
+          "microChip": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dateLost": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "rewardAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
+          },
+          "petPhotos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PetPhoto"
+            },
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false
@@ -1435,6 +1982,46 @@
         },
         "additionalProperties": false
       },
+      "Match": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lostPetId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "foundPetId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "matchScore": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "foundPet": {
+            "$ref": "#/components/schemas/FoundPet"
+          },
+          "lostPet": {
+            "$ref": "#/components/schemas/LostPet"
+          }
+        },
+        "additionalProperties": false
+      },
       "Message": {
         "type": "object",
         "properties": {
@@ -1477,6 +2064,75 @@
         },
         "additionalProperties": false
       },
+      "PetPhoto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lostPetId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "foundPetId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "photoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "foundPet": {
+            "$ref": "#/components/schemas/FoundPet"
+          },
+          "lostPet": {
+            "$ref": "#/components/schemas/LostPet"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Posts": {
+        "type": "object",
+        "properties": {
+          "foundPets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoundPet"
+            },
+            "nullable": true
+          },
+          "lostPets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LostPet"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PostsApiResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Posts"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -1511,6 +2167,55 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ci": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "photoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "foundPets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoundPet"
+            },
+            "nullable": true
+          },
+          "lostPets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LostPet"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "UserDTO": {
         "type": "object",

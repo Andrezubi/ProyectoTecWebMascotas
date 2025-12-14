@@ -11,5 +11,6 @@ namespace ProyectoMascotas.Core.Interfaces
     public interface ISecurityRepository : IBaseRepository<Security>
     {
         Task<Security> GetLoginByCredentials(UserLoginRequest login);
+        Task<Security> GetSecurityByEmailAsync(string email);
     }
 }

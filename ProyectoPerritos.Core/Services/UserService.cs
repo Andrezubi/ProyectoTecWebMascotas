@@ -5,11 +5,14 @@ using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
 using ProyectoMascotas.Core.QueryFilters;
+using SocialMedia.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,12 +35,7 @@ namespace ProyectoMascotas.Core.Services
                 users = users.Where(x => x.Name== filters.Name);
             }
 
-            
-
-
-            foreach (var user in users) {
-                user.Password = "No tienes permiso de ver contrasenias";
-            }
+           
 
             var pagedUsers = PagedList<object>.Create(users, filters.PageNumber, filters.PageSize);
             if (pagedUsers.Any())
@@ -57,10 +55,6 @@ namespace ProyectoMascotas.Core.Services
                     Pagination = pagedUsers,
                     StatusCode = HttpStatusCode.OK
                 };
-
-
-
-               
             }
         }
         public async Task<User> GetUserByIdAsync(int id)
@@ -70,7 +64,7 @@ namespace ProyectoMascotas.Core.Services
             {
                 throw new BusinessException("No existe usuario con ese id",404);
             }
-            user.Password = "No tienes permiso de ver contrasenias";
+            
             return user;
         }
         public async Task InsertUserAsync(User user)
@@ -122,15 +116,95 @@ namespace ProyectoMascotas.Core.Services
             return true;
 
         }
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user, string currentEmail, string currentRole)
         {
-            await _unitOfWork.UserRepository.Update(user);
+            var prevUser = await _unitOfWork.UserRepository.GetById(user.Id);
+
+            
+            if (prevUser.Email != currentEmail && currentRole != "Administrator")
+            {
+                throw new BusinessException("El usuario no esta autenticado para ver los posts", 401);
+            }
+            var prevSecurity = await _unitOfWork.SecurityRepository.GetSecurityByEmailAsync(prevUser.Email);
+            
+            if (prevSecurity == null)
+            {
+                throw new BusinessException("El email no se encuentra en la base de datos");
+            }
+           
+
+            prevSecurity.Name = user.Name;
+            prevSecurity.Login = user.Email;
+            prevSecurity.Password = user.Password;
+
+            if (prevUser.Email != user.Email)
+            {
+                var userEmail = await _unitOfWork.UserRepositoryExtra.GetUserByEmailAsync(user.Email);
+                if (userEmail != null)
+                {
+                    throw new BusinessException("Este email ya fue usado", 400);
+                }
+            }
+            if (prevUser.Ci != user.Ci)
+            {
+                var userCi = await _unitOfWork.UserRepositoryExtra.GetUserByCiAsync(user.Ci);
+                if (userCi != null)
+                {
+                    throw new BusinessException("Este Ci ya fue usado", 400);
+                }
+            }
+
+            // Update User
+            prevUser.Name = user.Name;
+            prevUser.Email = user.Email;
+            prevUser.Ci = user.Ci;
+            prevUser.Phone = user.Phone;
+            prevUser.PhotoUrl = user.PhotoUrl;
+            prevUser.Password = user.Password;
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task DeleteUserAsync(User user)
+        public async Task DeleteUserAsync(int id, string currentEmail, string role)
         {
-            await _unitOfWork.UserRepository.Delete(user.Id);
+
+            var user = await _unitOfWork.UserRepository.GetById(id);
+
+
+            if (user == null)
+            {
+                throw new BusinessException("No existe usuario con ese id", 404);
+            }
+            if (user.Email != currentEmail && role != "Administrator")
+            {
+                throw new BusinessException("El usuario no esta autenticado para ver los posts", 401);
+            }
+
+            var security = await _unitOfWork.SecurityRepository.GetSecurityByEmailAsync(user.Email);
+            await _unitOfWork.SecurityRepository.Delete(security.Id);
+            await _unitOfWork.UserRepository.Delete(id);
             await _unitOfWork.SaveChangesAsync();
+
+        }
+        public async Task<Posts> GetUserPosts(int id, string currentEmail, string currentRole) {
+
+            var user = await _unitOfWork.UserRepositoryExtra.GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                throw new BusinessException("No existe usuario con ese id", 404);
+            }
+            if (user.Email != currentEmail && currentRole!="Administrator")
+            {
+                throw new BusinessException("El usuario no esta autenticado para ver los posts", 401);
+            }
+
+            IEnumerable<FoundPet> foundPets= await _unitOfWork.FoundPetRepositoryExtra.GetPetsByUserId(id);
+            IEnumerable<LostPet> lostPets = await _unitOfWork.LostPetRepositoryExtra.GetPetsByUserId(id);
+            return new Posts
+            {
+                FoundPets = foundPets,
+                LostPets = lostPets
+            };
+            
         }
     }
 }

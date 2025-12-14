@@ -15,7 +15,7 @@ namespace ProyectoMascotas.Core.QueryFilters
         /// <summary>
         /// Nombre del Usuario
         /// </summary>
-        [SwaggerSchema("Id del usuario")]
+        [SwaggerSchema("Nombre del usuario")]
         public string? Name { get; set; }
 
     }

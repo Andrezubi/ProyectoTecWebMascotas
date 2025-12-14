@@ -82,5 +82,30 @@ namespace ProyectoMascotas.Infrastructure.Repositories
 
         }
 
+        public async Task<IEnumerable<FoundPet>> GetPetsByUserId(int userId)
+        {
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => @"
+                SELECT *
+                FROM FoundPet
+                WHERE UserId=@UserId
+                ORDER BY Id",
+
+                    DatabaseProvider.MySql => @"",
+                    _ => throw new NotSupportedException("Provider no soportado")
+                };
+
+                return await _dapper.QueryAsync<FoundPet>(sql, new { UserId = userId });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
     }
     }

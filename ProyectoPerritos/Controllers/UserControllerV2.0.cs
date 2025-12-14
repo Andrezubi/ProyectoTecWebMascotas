@@ -57,6 +57,7 @@ namespace ProyectoMascotas.Api.Controllers
         [MapToApiVersion("2.0")]
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<UserDTO>>))]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetUsers([FromQuery] UserQueryFilter filters)
         {
             var users = await _userService.GetAllUsersAsync(filters);
@@ -103,6 +104,7 @@ namespace ProyectoMascotas.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetUserById(int id)
         {
 
@@ -169,6 +171,7 @@ namespace ProyectoMascotas.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        
         public async Task<IActionResult> InsertUser([FromBody] UserDTO userDTO)
         {
             try

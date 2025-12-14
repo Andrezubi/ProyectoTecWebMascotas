@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "j3lAYc/h64Q=",
+  "dgSpecHash": "z1ZEb2y+48s=",
   "success": true,
   "projectFilePath": "D:\\coasas andres\\Cosas TecWeb1\\ProyectoTecWebMascotas\\ProyectoPerritos.Infrastructure\\ProyectoMascotas.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -78,8 +78,6 @@
     "C:\\Users\\59169\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\mysqlconnector\\2.4.0\\mysqlconnector.2.4.0.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\9.0.0\\pomelo.entityframeworkcore.mysql.9.0.0.nupkg.sha512",
-    "C:\\Users\\59169\\.nuget\\packages\\runtime.any.system.runtime\\4.3.0\\runtime.any.system.runtime.4.3.0.nupkg.sha512",
-    "C:\\Users\\59169\\.nuget\\packages\\runtime.any.system.text.encoding\\4.3.0\\runtime.any.system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\swashbuckle.aspnetcore\\9.0.6\\swashbuckle.aspnetcore.9.0.6.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\swashbuckle.aspnetcore.annotations\\9.0.6\\swashbuckle.aspnetcore.annotations.9.0.6.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\9.0.6\\swashbuckle.aspnetcore.swagger.9.0.6.nupkg.sha512",
@@ -104,7 +102,6 @@
     "C:\\Users\\59169\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\system.memory.data\\1.0.2\\system.memory.data.1.0.2.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
-    "C:\\Users\\59169\\.nuget\\packages\\system.private.uri\\4.3.0\\system.private.uri.4.3.0.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\system.reflection.metadata\\7.0.0\\system.reflection.metadata.7.0.0.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\59169\\.nuget\\packages\\system.runtime.caching\\6.0.0\\system.runtime.caching.6.0.0.nupkg.sha512",
