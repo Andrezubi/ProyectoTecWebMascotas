@@ -14,7 +14,7 @@ namespace ProyectoMascotas.Core.Interfaces.ServiceInterfaces
         Task<ResponseData> GetAllFoundPetsAsync(FoundPetQueryFilter filters);
         Task<FoundPet> GetFoundPetByIdAsync(int ? id);
         Task InsertFoundPetAsync(FoundPet foundPet);
-        Task UpdateFoundPetAsync(FoundPet foundPet);
-        Task DeleteFoundPetAsync(FoundPet foundPet);
+        Task UpdateFoundPetAsync(FoundPet foundPet, string currentEmail, string role);
+        Task DeleteFoundPetAsync(int petId, string currentEmail, string role);
     }
 }

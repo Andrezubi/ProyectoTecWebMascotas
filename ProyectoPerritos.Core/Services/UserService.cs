@@ -123,7 +123,7 @@ namespace ProyectoMascotas.Core.Services
             
             if (prevUser.Email != currentEmail && currentRole != "Administrator")
             {
-                throw new BusinessException("El usuario no esta autenticado para ver los posts", 401);
+                throw new BusinessException("El usuario no esta autorizado para actualizar los datos de este perfil", 401);
             }
             var prevSecurity = await _unitOfWork.SecurityRepository.GetSecurityByEmailAsync(prevUser.Email);
             
@@ -175,7 +175,7 @@ namespace ProyectoMascotas.Core.Services
             }
             if (user.Email != currentEmail && role != "Administrator")
             {
-                throw new BusinessException("El usuario no esta autenticado para ver los posts", 401);
+                throw new BusinessException("El usuario no esta autenticado para borrar usuario", 401);
             }
 
             var security = await _unitOfWork.SecurityRepository.GetSecurityByEmailAsync(user.Email);

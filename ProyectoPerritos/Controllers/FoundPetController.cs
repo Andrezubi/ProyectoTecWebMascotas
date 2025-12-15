@@ -12,6 +12,7 @@ using ProyectoMascotas.Core.QueryFilters;
 using ProyectoMascotas.Core.Services;
 using ProyectoMascotas.Infrastructure.Validators;
 using System.Net;
+using System.Security.Claims;
 
 namespace ProyectoMascotas.Api.Controllers
 {
@@ -194,6 +195,143 @@ namespace ProyectoMascotas.Api.Controllers
 
                 return StatusCode(statCode, responsePost);
             }
+        }
+
+
+
+        /// <summary>
+        /// Actualiza los datos de la publicacion de una mascota perdida.
+        /// </summary>
+        /// <remarks>
+        /// Este endpoint recibe un <see cref="FoundPetDTO"/> y guarda los cambios necesarios a la mascota perdida y la guarda en  la base de datos. 
+        /// Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+        /// </remarks>
+        /// <param name="foundPetDTO">Datos de la mascota perdida a actualizar.</param>
+        /// <returns>La mascota perdida actualizada envuelto en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="200">Mascota Perdida actualizada exitosamente.</response>
+        /// <response code="400">Error de validación de los datos de entrada.</response>
+        /// <response code="404">Error de datos, no se encontro la mascota perdida</response>
+        /// <response code="500">Error interno del servidor.</response>
+        /// <response code="401">Error de autenticacion</response>
+        [Authorize(Roles = $"{nameof(RoleType.Administrator)},{nameof(RoleType.Consumer)}")]
+        [HttpPut]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<FoundPetDTO>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> UpdateUser([FromBody] FoundPetDTO foundPetDTO)
+        {
+            try
+            {
+                var currentEmail = User.FindFirstValue("Login");
+                var currentRole = User.FindFirstValue(ClaimTypes.Role);
+                var validationResult = await _validationService.ValidateAsync(foundPetDTO);
+
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(new { Errors = validationResult.Errors });
+                }
+
+                var foundPet = _mapper.Map<FoundPet>(foundPetDTO);
+                await _foundPetService.UpdateFoundPetAsync(foundPet, currentEmail, currentRole);
+
+                var response = new ApiResponse<FoundPetDTO>(foundPetDTO);
+
+                return Ok(response);
+            }
+            catch (Exception err)
+            {
+                int statCode = 500;
+                if (err is BusinessException)
+                {
+                    BusinessException? businessException = err as BusinessException;
+                    if (businessException != null)
+                    {
+                        statCode = businessException.StatusCode;
+                    }
+
+                }
+
+                var responsePost = new ResponseData()
+                {
+                    Messages = new Message[] { new() { Type = "Error", Description = err.Message } },
+                    StatusCode = (HttpStatusCode)statCode
+                };
+
+                return StatusCode(statCode, responsePost);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Borra una Publicacion de Mascota Perdida por ID.
+        /// </summary>
+        /// <remarks>
+        /// Este endpoint busca una Mascota Perdida según su identificador único y la elimina de la base de datos. 
+        /// Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+        /// Devuelve error 404 si no encuentra la mascota perdida 
+        /// Devuelve un ok de tipo 204 en caso de que se haya borrado exitosamente
+        /// </remarks>
+        /// <param name="id">Identificador del usuario a buscar.</param>
+        /// <returns>Objeto <see cref="FoundPetDTO"/> envuelto en <see cref="ApiResponse{T}"/>.</returns>
+        /// <response code="204">Mascota Perdida encontrada y borrada correctamente.</response>
+        /// <response code="400">El ID  no es válido.</response>
+        /// <response code="404">Mascota Perdida NO fue encontrada</response>
+        /// <response code="500">Error interno del servidor.</response>
+        /// <response code="401">Error de falta autorizacion</response>
+        [Authorize(Roles = $"{nameof(RoleType.Administrator)},{nameof(RoleType.Consumer)}")]
+        [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent, Type = typeof(ApiResponse<FoundPetDTO>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+
+            try
+            {
+                var currentEmail = User.FindFirstValue("Login");
+                var currentRole = User.FindFirstValue(ClaimTypes.Role);
+                var idRequest = new GetByIdRequest { Id = id };
+                var validationResult = await _validationService.ValidateAsync(idRequest);
+
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(new { Errors = validationResult.Errors });
+                }
+
+                await _foundPetService.DeleteFoundPetAsync(id, currentEmail, currentRole);
+                return NoContent();
+
+            }
+            catch (Exception err)
+            {
+                int statCode = 500;
+                if (err is BusinessException)
+                {
+                    BusinessException? businessException = err as BusinessException;
+                    if (businessException != null)
+                    {
+                        statCode = businessException.StatusCode;
+                    }
+
+                }
+
+                var responsePost = new ResponseData()
+                {
+                    Messages = new Message[] { new() { Type = "Error", Description = err.Message } },
+                    StatusCode = (HttpStatusCode)statCode
+                };
+
+                return StatusCode(statCode, responsePost);
+            }
+
+
         }
 
     }

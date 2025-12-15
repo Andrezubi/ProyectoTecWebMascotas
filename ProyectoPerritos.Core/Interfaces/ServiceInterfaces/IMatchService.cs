@@ -11,7 +11,7 @@ namespace ProyectoMascotas.Core.Interfaces.ServiceInterfaces
     {
         Task<IEnumerable<Match>> GetAllMatchesAsync();
         Task<Match> GetMatchByIdAsync(int id);
-        Task InsertMatchAsync(Match match);
+        Task<Match> InsertMatchAsync(int FoundPetId, int LostPetId);
         Task UpdateMatchAsync(Match match);
         Task DeleteMatchAsync(Match match);
     }

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProyectoMascotas.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbf2a22390314ccd20cff790bed31b19b0ae9b4d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a49696748216ea20221606d7be8a2c0f8f5be183")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProyectoMascotas.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProyectoMascotas.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

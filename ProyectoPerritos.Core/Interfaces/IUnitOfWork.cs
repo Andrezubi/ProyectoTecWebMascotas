@@ -22,7 +22,7 @@ namespace ProyectoMascotas.Core.Interfaces
         IUserRepository UserRepositoryExtra { get; }
         ILostPetRepository LostPetRepositoryExtra { get; }
         IFoundPetRepository FoundPetRepositoryExtra { get; }
-
+        IPetPhotoRepository PetPhotoRepositoryExtra { get; }
 
 
         void SaveChanges();

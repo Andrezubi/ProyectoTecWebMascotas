@@ -96,14 +96,59 @@ namespace ProyectoMascotas.Core.Services
             await _unitOfWork.LostPetRepository.Add(lostPet);
             await _unitOfWork.SaveChangesAsync(); ;
         }
-        public async Task UpdateLostPetAsync(LostPet lostPet)
+        public async Task UpdateLostPetAsync(LostPet lostPet, string currentEmail, string role)
         {
-            await _unitOfWork.LostPetRepository.Update(lostPet);
+            var prevPet = await _unitOfWork.LostPetRepository.GetById(lostPet.Id);
+            if (prevPet == null)
+            {
+                throw new BusinessException("No se encontro dicha mascota", 404);
+            }
+            int userId = prevPet.UserId ?? 0;
+            var user = await _unitOfWork.UserRepository.GetById(userId);
+
+            if (user == null)
+            {
+                throw new BusinessException("No se encontro el due;o de la mascota", 404);
+            }
+
+            if (user.Email != currentEmail && role != "Administrator")
+            {
+                throw new BusinessException("El usuario no esta autorizado para actualizar los datos de este perfil", 401);
+            }
+            prevPet.Species = lostPet.Species;
+            prevPet.DateLost = lostPet.DateLost;
+            prevPet.Description = lostPet.Description;
+            prevPet.Name = lostPet.Name;
+            prevPet.Breed = lostPet.Breed;
+            prevPet.Latitude = lostPet.Latitude;
+            prevPet.Longitude = lostPet.Longitude;
+            prevPet.Status = lostPet.Status;
+            prevPet.Color = lostPet.Color;
+            prevPet.MicroChip = lostPet.MicroChip;
+            prevPet.RewardAmount = lostPet.RewardAmount;
+            prevPet.Sex = lostPet.Sex;
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task DeleteLostPetAsync(LostPet lostPet)
+        public async Task DeleteLostPetAsync(int petId, string currentEmail, string role)
         {
-            await _unitOfWork.LostPetRepository.Delete(lostPet.Id);
+            var prevPet = await _unitOfWork.LostPetRepository.GetById(petId);
+            if (prevPet == null)
+            {
+                throw new BusinessException("No se encontro dicha mascota", 404);
+            }
+            int userId = prevPet.UserId ?? 0;
+            var user = await _unitOfWork.UserRepository.GetById(userId);
+
+            if (user == null)
+            {
+                throw new BusinessException("No se encontro el due;o de la mascota", 404);
+            }
+
+            if (user.Email != currentEmail && role != "Administrator")
+            {
+                throw new BusinessException("El usuario no esta autorizado para actualizar los datos de este perfil", 401);
+            }
+            await _unitOfWork.LostPetRepository.Delete(petId);
             await _unitOfWork.SaveChangesAsync();
 
         }

@@ -27,6 +27,7 @@ namespace ProyectoMascotas.Infrastructure.Repositories
         public readonly IUserRepository? _userExtraRepository;
         public readonly ILostPetRepository _lostPetExtraRepository;
         public readonly IFoundPetRepository _foundPetExtraRepository;
+        public readonly IPetPhotoRepository _petPhotoExtraRepository;
 
         public readonly IDapperContext _dapper;
         private IDbContextTransaction? _efTransaction;
@@ -58,12 +59,15 @@ namespace ProyectoMascotas.Infrastructure.Repositories
             _petPhotoRepository ?? new BaseRepository<PetPhoto>(_context);
 
 
+
         public IUserRepository UserRepositoryExtra =>
             _userExtraRepository ?? new UserRepository(_context, _dapper);
         public ILostPetRepository LostPetRepositoryExtra=>
             _lostPetExtraRepository ?? new LostPetRepository(_context, _dapper);
         public IFoundPetRepository FoundPetRepositoryExtra =>
            _foundPetExtraRepository ?? new FoundPetRepository(_context, _dapper);
+        public IPetPhotoRepository PetPhotoRepositoryExtra =>
+            _petPhotoExtraRepository ?? new PetPhotoRepository(_context);
         public void Dispose()
         {
             if (_context != null)

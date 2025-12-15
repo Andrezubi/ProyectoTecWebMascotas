@@ -307,13 +307,17 @@ namespace ProyectoMascotas.Api.Controllers
         /// <param name="userDTO">Datos del usuario a actualizar.</param>
         /// <returns>El usuario actualizado envuelto en <see cref="ApiResponse{T}"/>.</returns>
         /// <response code="200">Usuario creado exitosamente.</response>
-        /// <response code="400">Error de validación de los datos de entrada.</response>
+        /// <response code="400">El ID del usuario no es válido.</response>
+        /// <response code="404">El Usuario NO fue encontrado</response>
         /// <response code="500">Error interno del servidor.</response>
+        /// <response code="401">Error de falta autorizacion</response>
         [Authorize(Roles = $"{nameof(RoleType.Administrator)},{nameof(RoleType.Consumer)}")]
         [HttpPut]
         [MapToApiVersion("1.0")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<UserDTO>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> UpdateUser([FromBody] UserDTO userDTO)
         {
@@ -376,7 +380,7 @@ namespace ProyectoMascotas.Api.Controllers
         /// <response code="404">El Usuario NO fue encontrado</response>
         /// <response code="500">Error interno del servidor.</response>
         /// <response code="401">Error de falta autorizacion</response>
-        [Authorize(Roles = nameof(RoleType.Administrator))]
+        [Authorize(Roles = $"{nameof(RoleType.Administrator)},{nameof(RoleType.Consumer)}")]
         [HttpDelete("{id}")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType((int)HttpStatusCode.NoContent, Type = typeof(ApiResponse<UserDTO>))]

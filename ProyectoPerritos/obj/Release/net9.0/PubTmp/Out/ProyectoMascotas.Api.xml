@@ -15,6 +15,7 @@
             <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
             <returns>Lista paginada de <see cref="T:ProyectoMascotas.Api.Data.FoundPetDTO"/> envuelta en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
             <response code="200">Retorna la lista de mascotas Encontradas correctamente paginada.</response>
+            <response code="500">Error interno del servidor.</response>
         </member>
         <member name="M:ProyectoMascotas.Api.Controllers.FoundPetController.GetfoundPetsById(System.Int32)">
             <summary>
@@ -45,6 +46,41 @@
             <response code="200">Mascota Encontrada creada exitosamente.</response>
             <response code="400">Error de validación de los datos de entrada.</response>
             <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.FoundPetController.UpdateUser(ProyectoMascotas.Api.Data.FoundPetDTO)">
+            <summary>
+            Actualiza los datos de la publicacion de una mascota perdida.
+            </summary>
+            <remarks>
+            Este endpoint recibe un <see cref="T:ProyectoMascotas.Api.Data.FoundPetDTO"/> y guarda los cambios necesarios a la mascota perdida y la guarda en  la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="foundPetDTO">Datos de la mascota perdida a actualizar.</param>
+            <returns>La mascota perdida actualizada envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Mascota Perdida actualizada exitosamente.</response>
+            <response code="400">Error de validación de los datos de entrada.</response>
+            <response code="404">Error de datos, no se encontro la mascota perdida</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de autenticacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.FoundPetController.DeleteUser(System.Int32)">
+            <summary>
+            Borra una Publicacion de Mascota Perdida por ID.
+            </summary>
+            <remarks>
+            Este endpoint busca una Mascota Perdida según su identificador único y la elimina de la base de datos. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra la mascota perdida 
+            Devuelve un ok de tipo 204 en caso de que se haya borrado exitosamente
+            </remarks>
+            <param name="id">Identificador del usuario a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.FoundPetDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="204">Mascota Perdida encontrada y borrada correctamente.</response>
+            <response code="400">El ID  no es válido.</response>
+            <response code="404">Mascota Perdida NO fue encontrada</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
         </member>
         <member name="M:ProyectoMascotas.Api.Controllers.LostPetController.GetlostPets(ProyectoMascotas.Core.QueryFilters.LostPetQueryFilter)">
             <summary>
@@ -57,6 +93,7 @@
             <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
             <returns>Lista paginada de <see cref="T:ProyectoMascotas.Api.Data.LostPetDTO"/> envuelta en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
             <response code="200">Retorna la lista de mascotas Perdidas correctamente paginada.</response>
+            <response code="500">Error interno del servidor.</response>
         </member>
         <member name="M:ProyectoMascotas.Api.Controllers.LostPetController.GetlostPetsById(System.Int32)">
             <summary>
@@ -87,6 +124,87 @@
             <response code="200">Mascota Perdida creada exitosamente.</response>
             <response code="400">Error de validación de los datos de entrada.</response>
             <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.LostPetController.UpdateUser(ProyectoMascotas.Api.Data.LostPetDTO)">
+            <summary>
+            Actualiza los datos de la publicacion de una mascota perdida.
+            </summary>
+            <remarks>
+            Este endpoint recibe un <see cref="T:ProyectoMascotas.Api.Data.LostPetDTO"/> y guarda los cambios necesarios a la mascota perdida y la guarda en  la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="lostPetDTO">Datos de la mascota perdida a actualizar.</param>
+            <returns>La mascota perdida actualizada envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Mascota Perdida actualizada exitosamente.</response>
+            <response code="400">Error de validación de los datos de entrada.</response>
+            <response code="404">Error de datos, no se encontro la mascota perdida</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de autenticacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.LostPetController.DeleteUser(System.Int32)">
+            <summary>
+            Borra una Publicacion de Mascota Perdida por ID.
+            </summary>
+            <remarks>
+            Este endpoint busca una Mascota Perdida según su identificador único y la elimina de la base de datos. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra la mascota perdida 
+            Devuelve un ok de tipo 204 en caso de que se haya borrado exitosamente
+            </remarks>
+            <param name="id">Identificador del usuario a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.LostPetDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="204">Mascota Perdida encontrada y borrada correctamente.</response>
+            <response code="400">El ID  no es válido.</response>
+            <response code="404">Mascota Perdida NO fue encontrada</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.MatchController.InsertUser(System.Int32,System.Int32)">
+            <summary>
+            Se inserta los ids de una mascota encontrada y una perdida y se los compara.
+            </summary>
+            <remarks>
+            Este endpoint recibe dos <see cref="T:System.Int32"/> y lo guarda en la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="lostPetId">Id de la Mascota Perdida</param>
+            <param name="foundPetId">Id de la Mascota Encontrada</param>
+            <returns>La Match creada envuelta en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Comparacion de mascotas creada exitosamente.</response>
+            <response code="400">Error de validación de los datos de entrada.</response>
+            <response code="500">Error interno del servidor.</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.PetPhotoController.InsertUser(ProyectoMascotas.Api.Data.PetPhotoDTO)">
+            <summary>
+            Inserta una nueva Foto de Mascota.
+            </summary>
+            <remarks>
+            Este endpoint recibe un <see cref="T:ProyectoMascotas.Api.Data.PetPhotoDTO"/> y lo guarda en la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="petPhotoDTO">Datos de la imagen a crear.</param>
+            <returns>La imagen de mascota creada envuelta en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Imagen de Mascota creada exitosamente.</response>
+            <response code="400">Error de validación de los datos de entrada.</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de autenticacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.PetPhotoController.GetfoundPetsById(System.Int32,System.String)">
+            <summary>
+            Obtiene las imagenes de una mascota por el id de la mascota.
+            </summary>
+            <remarks>
+            Este endpoint busca fotos de una mascota por el identificador de la mascota. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra el usuario ocn ID 
+            </remarks>
+            <param name="id">Identificador de la mascota a buscar.</param>
+            <param name="type"> Indica si la mascota es una mascota perdida o encontrada puede ser "lost" o "found"</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.FoundPetDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">La mascota fue encontrada y retornada correctamente.</response>
+            <response code="400">El ID de la mascota encontrada no es válido.</response>
+            <response code="500">Error interno del servidor.</response>
         </member>
         <member name="M:ProyectoMascotas.Api.Controllers.UserController.GetUsers(ProyectoMascotas.Core.QueryFilters.UserQueryFilter)">
             <summary>
@@ -99,6 +217,8 @@
             <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
             <returns>Lista paginada de <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> envuelta en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
             <response code="200">Retorna la lista de usuarios correctamente paginada.</response>
+            <response code="401">Error de falta autorizacion</response>
+            <response code="500">Error interno de servidor</response>
         </member>
         <member name="M:ProyectoMascotas.Api.Controllers.UserController.GetUserById(System.Int32)">
             <summary>
@@ -115,6 +235,7 @@
             <response code="400">El ID del usuario no es válido.</response>
             <response code="404">El Usuario NO fue encontrado</response>
             <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
         </member>
         <member name="M:ProyectoMascotas.Api.Controllers.UserController.InsertUser(ProyectoMascotas.Api.Data.UserDTO)">
             <summary>
@@ -130,19 +251,101 @@
             <response code="400">Error de validación de los datos de entrada.</response>
             <response code="500">Error interno del servidor.</response>
         </member>
-        <member name="M:ProyectoMascotas.Api.Controllers.UserController.UserLogin(ProyectoMascotas.Core.Custom_Entities.LoginRequest)">
+        <member name="M:ProyectoMascotas.Api.Controllers.UserController.GetPostsOfUser(System.Int32)">
             <summary>
-            Autentica un usuario mediante email y contraseña.
+            Obtiene todas las publicaciones de un usuario por id
             </summary>
             <remarks>
-            Devuelve "login Correcto" si las credenciales son válidas y "Login Incorrecto" si fallan. 
-            Maneja errores de negocio y del servidor.
+            Este endpoint busca las publicaciones de un usuario segun su identificador único. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra el usuario ocn ID
+            Devuelve 401 si falla la autorizacion
             </remarks>
-            <param name="loginRequest">Objeto <see cref="T:ProyectoMascotas.Core.Custom_Entities.LoginRequest"/> con email y contraseña.</param>
-            <returns>Mensaje de estado de autenticación.</returns>
-            <response code="200">Autenticación correcta.</response>
-            <response code="400">Credenciales incorrectas.</response>
-            <response code="404">Email ingresado no encontrado.</response>
+            <param name="id">Identificador del usuario de los posts a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Usuario encontrado y retornado correctamente.</response>
+            <response code="400">El ID del usuario no es válido.</response>
+            <response code="404">El Usuario NO fue encontrado</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserController.UpdateUser(ProyectoMascotas.Api.Data.UserDTO)">
+            <summary>
+            Actualiza los datos de un usuario.
+            </summary>
+            <remarks>
+            Este endpoint recibe un <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> y guarda los cambios necesarios al usuario a la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="userDTO">Datos del usuario a actualizar.</param>
+            <returns>El usuario actualizado envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Usuario creado exitosamente.</response>
+            <response code="400">El ID del usuario no es válido.</response>
+            <response code="404">El Usuario NO fue encontrado</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserController.DeleteUser(System.Int32)">
+            <summary>
+            Borra un Usuario por ID.
+            </summary>
+            <remarks>
+            Este endpoint busca un usuario según su identificador único y lo elimina de la base de datos. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra el usuario ocn ID 
+            Devuelve un ok de tipo 204 en caso de que se haya borrado exitosamente
+            </remarks>
+            <param name="id">Identificador del usuario a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="204">Usuario encontrado y borrado correctamente.</response>
+            <response code="400">El ID del usuario no es válido.</response>
+            <response code="404">El Usuario NO fue encontrado</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserControllerV2.GetUsers(ProyectoMascotas.Core.QueryFilters.UserQueryFilter)">
+            <summary>
+            Obtiene todos los usuarios con paginación y filtros opcionales.
+            </summary>
+            <remarks>
+            Este endpoint devuelve una lista de usuarios paginada según los filtros especificados. 
+            Se incluye información de paginación en la respuesta. No Filtra Si los filtros se mandan vacios
+            </remarks>
+            <param name="filters">Filtros opcionales para la consulta, como página, tamaño de página o criterios de búsqueda.</param>
+            <returns>Lista paginada de <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> envuelta en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Retorna la lista de usuarios correctamente paginada.</response>
+            <response code="401">Error de falta autorizacion</response>
+            <response code="500">Error interno de servidor</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserControllerV2.GetUserById(System.Int32)">
+            <summary>
+            Obtiene un usuario por su ID.
+            </summary>
+            <remarks>
+            Este endpoint busca un usuario según su identificador único. 
+            Devuelve un error 400 si la validación del ID falla o 500 si ocurre un error del servidor.
+            Devuelve error 404 si no encuentra el usuario ocn ID 
+            </remarks>
+            <param name="id">Identificador del usuario a buscar.</param>
+            <returns>Objeto <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Usuario encontrado y retornado correctamente.</response>
+            <response code="400">El ID del usuario no es válido.</response>
+            <response code="404">El Usuario NO fue encontrado</response>
+            <response code="500">Error interno del servidor.</response>
+            <response code="401">Error de falta autorizacion</response>
+        </member>
+        <member name="M:ProyectoMascotas.Api.Controllers.UserControllerV2.InsertUser(ProyectoMascotas.Api.Data.UserDTO)">
+            <summary>
+            Inserta un nuevo usuario.
+            </summary>
+            <remarks>
+            Este endpoint recibe un <see cref="T:ProyectoMascotas.Api.Data.UserDTO"/> y lo guarda en la base de datos. 
+            Devuelve un error 400 si la validación falla o 500 si ocurre un error del servidor.
+            </remarks>
+            <param name="userDTO">Datos del usuario a crear.</param>
+            <returns>El usuario creado envuelto en <see cref="T:ProyectoMascotas.Api.Responses.ApiResponse`1"/>.</returns>
+            <response code="200">Usuario creado exitosamente.</response>
+            <response code="400">Error de validación de los datos de entrada.</response>
             <response code="500">Error interno del servidor.</response>
         </member>
     </members>

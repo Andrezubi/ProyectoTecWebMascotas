@@ -1,4 +1,5 @@
 ﻿using ProyectoMascotas.Api.Data;
+using ProyectoMascotas.Core.Exceptions;
 using ProyectoMascotas.Core.Interfaces;
 using ProyectoMascotas.Core.Interfaces.ServiceInterfaces;
 using System;
@@ -22,12 +23,42 @@ namespace ProyectoMascotas.Core.Services
         {
             return await _unitOfWork.PetPhotoRepository.GetAll();
         }
-        public async Task<PetPhoto> GetPetPhotoByIdAsync(int id)
+        public async Task<IEnumerable<PetPhoto>> GetPetPhotoByIdAsync(int PetId, string type)
         {
-            return await _unitOfWork.PetPhotoRepository.GetById(id);
+            if (type.ToLower() == "lost") {
+                return await _unitOfWork.PetPhotoRepositoryExtra.GetPetPhotosByPetIdLostPets(PetId);
+            }
+            else if(type.ToLower() =="found")
+            {
+                return await _unitOfWork.PetPhotoRepositoryExtra.GetPetPhotosByPetIdFoundPets(PetId);
+            }
+            else
+                throw new BusinessException("Tipo de mascota incorrecto",400) ;
         }
         public async Task InsertPetPhotoAsync(PetPhoto petPhoto,string currentEmail, string Role)
         {
+            int? userId;
+            if (petPhoto.FoundPetId != null)
+            {
+                int id=petPhoto.FoundPetId ?? 0;
+                var pet = await _unitOfWork.FoundPetRepository.GetById(id);
+                userId = pet.UserId;
+            }
+            else
+            {
+                int id = petPhoto.LostPetId ?? 0;
+                var pet = await _unitOfWork.LostPetRepository.GetById(id);
+                userId = pet.UserId;
+            }
+            var user= await _unitOfWork.UserRepositoryExtra.GetUserByIdAsync(userId);
+
+
+            if (user.Email != currentEmail && Role != "Administrator")
+            {
+                throw new BusinessException("El usuario no esta autorizado para actualizar los datos de este perfil", 401);
+            }
+
+
             await _unitOfWork.PetPhotoRepository.Add(petPhoto);
             await _unitOfWork.SaveChangesAsync();
         }

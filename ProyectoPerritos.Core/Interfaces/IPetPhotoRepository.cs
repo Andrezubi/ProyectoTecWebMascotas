@@ -11,8 +11,10 @@ namespace ProyectoMascotas.Core.Interfaces
     {
         Task<IEnumerable<PetPhoto>> GetAllPetPhotosAsync();
         Task<PetPhoto> GetPetPhotoByIdAsync(int id);
-        Task InsertPetPhotoAsync(PetPhoto petPhoto, string currentEmail, string role);
+        Task InsertPetPhotoAsync(PetPhoto petPhoto);
         Task UpdatePetPhotoAsync(PetPhoto petPhoto);
         Task DeletePetPhotoAsync(PetPhoto petPhoto);
+        Task<List<PetPhoto>> GetPetPhotosByPetIdFoundPets(int id);
+        Task<List<PetPhoto>> GetPetPhotosByPetIdLostPets(int id);
     }
 }

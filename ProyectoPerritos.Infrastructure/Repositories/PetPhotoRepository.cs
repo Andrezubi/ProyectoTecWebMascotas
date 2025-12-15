@@ -43,5 +43,21 @@ namespace ProyectoMascotas.Infrastructure.Repositories
             _context.PetPhotos.Remove(petPhoto);
 
         }
+        public async Task<List<PetPhoto>> GetPetPhotosByPetIdLostPets(int id)
+        {
+            var petPhotos = await _context.PetPhotos
+                .Where(x => x.LostPetId == id)  
+                .ToListAsync();
+
+            return petPhotos;
+        }
+        public async Task<List<PetPhoto>> GetPetPhotosByPetIdFoundPets(int id)
+        {
+            var petPhotos = await _context.PetPhotos
+                .Where(x => x.FoundPetId == id)   // <-- use the correct FK name
+                .ToListAsync();
+
+            return petPhotos;
+        }
     }
 }

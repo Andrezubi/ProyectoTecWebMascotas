@@ -11,8 +11,11 @@ D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Relea
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Dapper.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\FluentValidation.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\FluentValidation.DependencyInjectionExtensions.dll
+D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.AspNetCore.JsonPatch.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.AspNetCore.Mvc.Versioning.dll
+D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.Data.SqlClient.dll
 D:\coasas andres\Cosas TecWeb1\ProyectoTecWebMascotas\ProyectoPerritos\obj\Release\net9.0\PubTmp\Out\Microsoft.EntityFrameworkCore.dll

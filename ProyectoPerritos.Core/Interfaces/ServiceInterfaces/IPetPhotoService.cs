@@ -10,8 +10,8 @@ namespace ProyectoMascotas.Core.Interfaces.ServiceInterfaces
     public interface IPetPhotoService
     {
         Task<IEnumerable<PetPhoto>> GetAllPetPhotosAsync();
-        Task<PetPhoto> GetPetPhotoByIdAsync(int id);
-        Task InsertPetPhotoAsync(PetPhoto petPhoto);
+        Task<IEnumerable<PetPhoto>> GetPetPhotoByIdAsync(int id,string type);
+        Task InsertPetPhotoAsync(PetPhoto petPhoto,string currentEmail, string role);
         Task UpdatePetPhotoAsync(PetPhoto petPhoto);
         Task DeletePetPhotoAsync(PetPhoto petPhoto);
     }
